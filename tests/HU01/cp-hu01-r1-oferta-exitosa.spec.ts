@@ -11,9 +11,24 @@ test.describe('HU01 - Publicación de Ofertas de Tutoría', () => {
     // 2. Click the "+ Nueva Oferta" button to open the modal
     await page.getByRole('button', { name: '+ Nueva Oferta' }).click();
 
-    // 3. Enter the offer title with unique timestamp to avoid duplicates
-    const uniqueTitle = `Cálculo Vectorial ${Date.now()}`;
-    await page.getByRole('textbox', { name: 'Ej. Cálculo Vectorial, Física' }).fill(uniqueTitle);
+      // 1. Definimos una lista de títulos posibles
+      const titulos = [
+          'Cálculo Vectorial',
+          'Física Mecánica',
+          'Álgebra Lineal',
+          'Ecuaciones Diferenciales',
+          'Termodinámica',
+          'Probabilidad y Estadística'
+      ];
+
+      // 2. Seleccionamos uno al azar
+      const tituloAleatorio = titulos[Math.floor(Math.random() * titulos.length)];
+
+      // 3. Creamos el título final con el timestamp para que sea único
+      const uniqueTitle = `${tituloAleatorio} - ${Date.now()}`;
+
+      // 4. Lo ingresamos en el campo
+      await page.getByRole('textbox', { name: 'Ej. Cálculo Vectorial, Física' }).fill(uniqueTitle);
 
     // 4. Clear the price field and enter 10
     const priceInput = await page.locator('input[type="number"]');
