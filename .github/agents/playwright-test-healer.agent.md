@@ -2,16 +2,7 @@
 name: playwright-test-healer
 description: Use this agent when you need to debug and fix failing Playwright tests
 tools:
-  - search
-  - edit
-  - playwright-test/browser_console_messages
-  - playwright-test/browser_evaluate
-  - playwright-test/browser_generate_locator
-  - playwright-test/browser_network_requests
-  - playwright-test/browser_snapshot
-  - playwright-test/test_debug
-  - playwright-test/test_list
-  - playwright-test/test_run
+  ['execute/getTerminalOutput', 'execute/awaitTerminal', 'execute/killTerminal', 'execute/createAndRunTask', 'execute/runInTerminal', 'execute/runTests', 'execute/runNotebookCell', 'execute/testFailure', 'read/readFile', 'pylance-mcp-server/pylanceDocuments', 'pylance-mcp-server/pylanceFileSyntaxErrors', 'pylance-mcp-server/pylanceImports', 'pylance-mcp-server/pylanceInstalledTopLevelModules', 'pylance-mcp-server/pylanceInvokeRefactoring', 'pylance-mcp-server/pylancePythonEnvironments', 'pylance-mcp-server/pylanceRunCodeSnippet', 'pylance-mcp-server/pylanceSettings', 'pylance-mcp-server/pylanceSyntaxErrors', 'pylance-mcp-server/pylanceUpdatePythonEnvironment', 'pylance-mcp-server/pylanceWorkspaceRoots', 'pylance-mcp-server/pylanceWorkspaceUserFiles', 'playwright-test/browser_click', 'playwright-test/browser_close', 'playwright-test/browser_console_messages', 'playwright-test/browser_drag', 'playwright-test/browser_evaluate', 'playwright-test/browser_file_upload', 'playwright-test/browser_fill_form', 'playwright-test/browser_generate_locator', 'playwright-test/browser_handle_dialog', 'playwright-test/browser_hover', 'playwright-test/browser_install', 'playwright-test/browser_mouse_click_xy', 'playwright-test/browser_mouse_drag_xy', 'playwright-test/browser_mouse_move_xy', 'playwright-test/browser_navigate', 'playwright-test/browser_navigate_back', 'playwright-test/browser_network_requests', 'playwright-test/browser_pdf_save', 'playwright-test/browser_press_key', 'playwright-test/browser_resize', 'playwright-test/browser_run_code', 'playwright-test/browser_select_option', 'playwright-test/browser_snapshot', 'playwright-test/browser_start_tracing', 'playwright-test/browser_stop_tracing', 'playwright-test/browser_tabs', 'playwright-test/browser_take_screenshot', 'playwright-test/browser_type', 'playwright-test/browser_verify_element_visible', 'playwright-test/browser_verify_list_visible', 'playwright-test/browser_verify_text_visible', 'playwright-test/browser_verify_value', 'playwright-test/browser_wait_for', 'playwright-test/generator_read_log', 'playwright-test/generator_setup_page', 'playwright-test/generator_write_test', 'playwright-test/planner_save_plan', 'playwright-test/planner_setup_page', 'playwright-test/planner_submit_plan', 'playwright-test/test_debug', 'playwright-test/test_list', 'playwright-test/test_run', 'edit/createDirectory', 'edit/createFile', 'edit/createJupyterNotebook', 'edit/editFiles', 'edit/editNotebook', 'search/changes', 'search/codebase', 'search/fileSearch', 'search/listDirectory', 'search/searchResults', 'search/textSearch', 'search/usages', 'web/fetch', 'web/githubRepo']
 model: Claude Sonnet 4
 mcp-servers:
   playwright-test:
