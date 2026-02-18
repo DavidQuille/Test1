@@ -1,37 +1,42 @@
 // spec: specs/CasosHU01.md
-// case: CP-HU-01-R9 - Bloqueo por límite máximo de categorías
+// case: CP-HU-01-R9 - Bloqueo por l\u00edmite m\u00e1ximo de categor\u00edas
 
 import { test, expect } from '@playwright/test';
+import { DASHBOARD_TUTOR_URL } from '../config';
 
-test.describe('HU01 - Publicación de Ofertas de Tutoría', () => {
-  test('CP-HU-01-R9: Bloqueo por límite máximo de categorías (Máx. 5)', async ({ page }) => {
-    // 1. Navigate to tutor dashboard
-    await page.goto('https://politutorias-frontend.vercel.app/dashboard/tutor');
+test.describe('HU01 - Publicaci\u00f3n de Ofertas de Tutor\u00eda', () => {
+  test('CP-HU-01-R9: Bloqueo por l\u00edmite de categor\u00edas', async ({ page }) => {
+    // 1. Navigate to the tutor dashboard
+    await page.goto(DASHBOARD_TUTOR_URL);
 
     // 2. Open modal to test category limit
     await page.getByRole('button', { name: '+ Nueva Oferta' }).click();
 
-    // 3. Select 5 categories: Matemáticas, Física, Química, Álgebra, Cálculo
-    await page.getByRole('textbox', { name: 'Buscar categorías...' }).fill('Matemáticas');
-    await page.getByRole('button', { name: 'Matemáticas' }).click();
+    // 3. Select 5 categories that are available: Matem\u00e1tica, F\u00edsica, Qu\u00edmica, Estad\u00edstica, Programaci\u00f3n
+    await page.getByRole('textbox', { name: 'Buscar categor\u00edas...' }).fill('Matem\u00e1tica');
+    await page.getByRole('button', { name: 'Matem\u00e1tica' }).click();
 
-    // Select Física
-    await page.getByRole('button', { name: 'Física' }).click();
+    // Select F\u00edsica
+    await page.getByRole('button', { name: 'F\u00edsica' }).click();
 
-    // Select Química
-    await page.getByRole('button', { name: 'Química' }).click();
+    // Select Qu\u00edmica
+    await page.getByRole('button', { name: 'Qu\u00edmica', exact: true }).click();
 
-    // Select Álgebra
-    await page.getByRole('button', { name: 'Álgebra' }).click();
+    // Select Estad\u00edstica
+    await page.getByRole('button', { name: 'Estad\u00edstica' }).click();
 
-    // Select Cálculo to reach 5/5 limit
-    await page.getByRole('button', { name: 'Cálculo' }).click();
+    // Select Programaci\u00f3n to reach 5/5 limit
+    await page.getByRole('button', { name: 'Programaci\u00f3n' }).click();
 
-    // 4. Verify the counter shows "5/5"
+    // 4. Verify the counter shows \"5/5\"
     await expect(page.getByText('5/5')).toBeVisible();
 
-    // Verify that all other category buttons are disabled
-    const disabledCount = await page.locator('button[disabled]').count();
-    expect(disabledCount).toBeGreaterThan(0);
+    // 5. Verify that all other category buttons are disabled after reaching the limit
+    await expect(page.getByRole('button', { name: 'Electr\u00f3nica', exact: true })).toBeDisabled();
+    await expect(page.getByRole('button', { name: 'Mec\u00e1nica', exact: true })).toBeDisabled();
+    await expect(page.getByRole('button', { name: 'Termodin\u00e1mica', exact: true })).toBeDisabled();
+    
+    // This demonstrates the limit is working correctly - no error message needed
+    // as the system prevents adding more categories by disabling the buttons
   });
 });

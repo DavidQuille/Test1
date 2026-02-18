@@ -2,11 +2,12 @@
 // case: CP-HU-01-R3 - Bloqueo por precio por hora inválido
 
 import { test, expect } from '@playwright/test';
+import { DASHBOARD_TUTOR_URL } from '../config';
 
 test.describe('HU01 - Publicación de Ofertas de Tutoría', () => {
   test('CP-HU-01-R3: Bloqueo por precio por hora inválido (fuera de rango)', async ({ page }) => {
     // 1. Navigate to the tutor dashboard
-    await page.goto('https://politutorias-frontend.vercel.app/dashboard/tutor');
+    await page.goto(DASHBOARD_TUTOR_URL);
 
     // 2. Click the "+ Nueva Oferta" button to open the modal
     await page.getByRole('button', { name: '+ Nueva Oferta' }).click();
@@ -20,14 +21,17 @@ test.describe('HU01 - Publicación de Ofertas de Tutoría', () => {
 
     // 5. Modalidad is already set to "Presencial" by default
 
-    // 6. Select "Ciencias Exactas" category
-    await page.getByRole('textbox', { name: 'Buscar categorías...' }).fill('Ciencias Exactas');
-    await page.getByRole('button', { name: 'Ciencias Exactas' }).click();
+    // 6. Select "Física" category
+    await page.getByRole('textbox', { name: 'Buscar categorías...' }).fill('Física');
+    await page.getByRole('button', { name: 'Física' }).click();
 
     // 7. Enter the description
     await page.getByRole('textbox', { name: 'Describe qué incluye tu tutor' }).fill('Tutorías personalizadas de Física I para estudiantes universitarios.');
 
-    // 8. Click "Publicar Oferta" to trigger validation
+    // 8. Close the categories dropdown by clicking on the title field
+    await page.getByRole('textbox', { name: /Ej. C\u00e1lculo Vectorial/ }).click();
+
+    // 9. Click \"Publicar Oferta\" to trigger validation
     await page.getByRole('button', { name: 'Publicar Oferta' }).click();
 
     // Verify the price field shows error

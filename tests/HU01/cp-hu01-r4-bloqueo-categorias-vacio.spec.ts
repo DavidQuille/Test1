@@ -2,11 +2,12 @@
 // case: CP-HU-01-R4 - Bloqueo por categorías vacías
 
 import { test, expect } from '@playwright/test';
+import { DASHBOARD_TUTOR_URL } from '../config';
 
 test.describe('HU01 - Publicación de Ofertas de Tutoría', () => {
-  test('CP-HU-01-R4: Bloqueo por categorías de oferta vacías', async ({ page }) => {
+  test('CP-HU-01-R4: Bloqueo por no seleccionar categorías', async ({ page }) => {
     // 1. Navigate to the tutor dashboard
-    await page.goto('https://politutorias-frontend.vercel.app/dashboard/tutor');
+    await page.goto(DASHBOARD_TUTOR_URL);
 
     // 2. Click to open the new offer modal
     await page.getByRole('button', { name: '+ Nueva Oferta' }).click();
@@ -25,7 +26,10 @@ test.describe('HU01 - Publicación de Ofertas de Tutoría', () => {
     // 7. Enter the description
     await page.getByRole('textbox', { name: 'Describe qué incluye tu tutor' }).fill('Clases de Python desde cero hasta nivel intermedio.');
 
-    // 8. Click to submit form and trigger validation error
+    // 8. Close the categories dropdown by clicking on the title field
+    await page.getByRole('textbox', { name: /Ej. C\u00e1lculo Vectorial/ }).click();
+
+    // 9. Click to submit form and trigger validation error
     await page.getByRole('button', { name: 'Publicar Oferta' }).click();
 
     // Verify the error message for categories is displayed

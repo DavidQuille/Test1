@@ -17,7 +17,7 @@ url: https://politutorias-frontend.vercel.app/dashboard/tutor
  4. Ingresar en el campo 'Título de la Oferta': 'Cálculo Vectorial'.
  5. Ingresar en el campo 'Precio por Hora ($)': '10'.
  6. Seleccionar en el campo 'Modalidad': 'Presencial'.
- 7. Seleccionar en el campo 'Categorías': 'Matemáticas'.
+ 7. Seleccionar en el campo 'Categorías': 'Matemática'.
  8. Ingresar en el campo 'Descripción de la Oferta': 'Se enseñará cálculo vectorial, incluyendo integrales de línea y superficie.'.
  9. Hacer clic en el botón 'Publicar Oferta'.
 
@@ -41,8 +41,8 @@ url: https://politutorias-frontend.vercel.app/dashboard/tutor
  4. Dejar el campo 'Título de la Oferta' vacío.
  5. Ingresar en el campo 'Precio por Hora ($)': '10'.
  6. Seleccionar en el campo 'Modalidad': 'Presencial'.
- 7. Seleccionar en el campo 'Categorías': 'Matemáticas'.
- 8. Ingresar en el campo 'Descripción de la Oferta': 'Clases de matemáticas avanzadas para universitarios.'.
+ 7. Seleccionar en el campo 'Categorías': 'Matemática'.
+ 8. Ingresar en el campo 'Descripción de la Oferta': 'Clases de Matemática avanzadas para universitarios.'.
  9. Hacer clic en el botón 'Publicar Oferta'.
 
 **Expected Results:**
@@ -65,7 +65,7 @@ url: https://politutorias-frontend.vercel.app/dashboard/tutor
  4. Ingresar en el campo 'Título de la Oferta': 'Física I'.
  5. Ingresar en el campo 'Precio por Hora ($)': '3' (valor fuera del rango $5-$20).
  6. Seleccionar en el campo 'Modalidad': 'Presencial'.
- 7. Seleccionar en el campo 'Categorías': 'Ciencias Exactas'.
+ 7. Seleccionar en el campo 'Categorías': 'Física'.
  8. Ingresar en el campo 'Descripción de la Oferta': 'Tutorías personalizadas de Física I para estudiantes universitarios.'.
  9. Hacer clic en el botón 'Publicar Oferta'.
 
@@ -113,7 +113,7 @@ url: https://politutorias-frontend.vercel.app/dashboard/tutor
  4. Ingresar en el campo 'Título de la Oferta': 'Álgebra Lineal'.
  5. Ingresar en el campo 'Precio por Hora ($)': '12'.
  6. Seleccionar en el campo 'Modalidad': 'Presencial'.
- 7. Seleccionar en el campo 'Categorías': 'Matemáticas'.
+ 7. Seleccionar en el campo 'Categorías': 'Matemática'.
  8. Dejar el campo 'Descripción de la Oferta' vacío.
  9. Hacer clic en el botón 'Publicar Oferta'.
 
@@ -190,7 +190,7 @@ url: https://politutorias-frontend.vercel.app/dashboard/tutor
 **Steps:**
  1. Iniciar sesión como Tutor.
  2. Navegar a la sección "Mis Ofertas" y abrir la modal.
- 3. Seleccionar 5 categorías: 'Matemática', 'Física', 'Química', 'Álgebra' y 'Cálculo'.
+ 3. Seleccionar 5 categorías: 'Matemática', 'Física', 'Química', 'Estadística' y 'Programación'.
  4. Intentar seleccionar una sexta categoría (ej. 'Estadística').
 
 **Expected Results:**
@@ -229,7 +229,7 @@ url: https://politutorias-frontend.vercel.app/dashboard/tutor
  1. Iniciar sesión como Tutor.
  2. Navegar a la sección "Mis Ofertas" y abrir la modal.
  3. Ingresar en el campo 'Título de la Oferta': **'Fe'** (2 caracteres).
- 4. Completar los campos: Precio '10', Modalidad 'Presencial', Categoría 'Matemáticas' y una descripción válida.
+ 4. Completar los campos: Precio '10', Modalidad 'Presencial', Categoría 'Matemática' y una descripción válida.
  5. Hacer clic en el botón 'Publicar Oferta'.
 
 **Expected Results:**

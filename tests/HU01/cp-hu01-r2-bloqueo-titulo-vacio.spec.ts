@@ -2,11 +2,12 @@
 // case: CP-HU-01-R2 - Bloqueo por título de oferta vacío
 
 import { test, expect } from '@playwright/test';
+import { DASHBOARD_TUTOR_URL } from '../config';
 
 test.describe('HU01 - Publicación de Ofertas de Tutoría', () => {
   test('CP-HU-01-R2: Bloqueo por título de oferta vacío', async ({ page }) => {
     // 1. Navigate to the tutor dashboard
-    await page.goto('https://politutorias-frontend.vercel.app/dashboard/tutor');
+    await page.goto(DASHBOARD_TUTOR_URL);
 
     // 2. Click the "+ Nueva Oferta" button to open the modal
     await page.getByRole('button', { name: '+ Nueva Oferta' }).click();
@@ -19,14 +20,17 @@ test.describe('HU01 - Publicación de Ofertas de Tutoría', () => {
 
     // 5. Modalidad is already set to "Presencial" by default, no action needed
 
-    // 6. Type "Matemáticas" in the categories search field and select it
-    await page.getByRole('textbox', { name: 'Buscar categorías...' }).fill('Matemáticas');
-    await page.getByRole('button', { name: 'Matemáticas' }).click();
+    // 6. Type "Matemática" in the categories search field and select it
+    await page.getByRole('textbox', { name: 'Buscar categorías...' }).fill('Matemática');
+    await page.getByRole('button', { name: 'Matemática' }).click();
 
     // 7. Enter the description for the tutoring offer
-    await page.getByRole('textbox', { name: 'Describe qué incluye tu tutor' }).fill('Clases de matemáticas avanzadas para universitarios.');
+    await page.getByRole('textbox', { name: 'Describe qué incluye tu tutor' }).fill('Clases de Matemática avanzadas para universitarios.');
 
-    // 8. Click "Publicar Oferta" button without filling the title
+    // 8. Close the categories dropdown by clicking on the title field
+    await page.getByRole('textbox', { name: /Ej. Cálculo Vectorial/ }).click();
+
+    // 9. Click "Publicar Oferta" button without filling the title
     await page.getByRole('button', { name: 'Publicar Oferta' }).click();
 
     // Verify the validation error is shown for the title field

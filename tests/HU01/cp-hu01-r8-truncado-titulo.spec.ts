@@ -2,11 +2,12 @@
 // case: CP-HU-01-R8 - Truncado automático por límite máximo en Título
 
 import { test, expect } from '@playwright/test';
+import { DASHBOARD_TUTOR_URL } from '../config';
 
 test.describe('HU01 - Publicación de Ofertas de Tutoría', () => {
   test('CP-HU-01-R8: Truncado automático por límite máximo en Título (80 caracteres)', async ({ page }) => {
     // 1. Navigate to tutor dashboard
-    await page.goto('https://politutorias-frontend.vercel.app/dashboard/tutor');
+    await page.goto(DASHBOARD_TUTOR_URL);
 
     // 2. Open the new offer modal
     await page.getByRole('button', { name: '+ Nueva Oferta' }).click();
