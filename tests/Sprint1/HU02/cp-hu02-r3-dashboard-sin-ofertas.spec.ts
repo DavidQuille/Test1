@@ -3,7 +3,7 @@
 // title: Visualización del Dashboard de Tutor sin ofertas publicadas (Estado Vacío)
 
 import { test, expect } from '@playwright/test';
-import { DASHBOARD_TUTOR_URL } from '../config';
+import { DASHBOARD_TUTOR_URL } from '../../config';
 
 test.describe('Dashboard de Tutor - Casos HU02', () => {
   test.fixme('CP-HU-02-R3: Visualizaci\u00f3n Dashboard sin ofertas publicadas', async ({ page }) => {

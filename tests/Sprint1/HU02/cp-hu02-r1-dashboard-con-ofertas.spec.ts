@@ -3,7 +3,7 @@
 // title: Visualización del Dashboard de Tutor con ofertas publicadas
 
 import { test, expect } from '@playwright/test';
-import { DASHBOARD_TUTOR_URL } from '../config';
+import { DASHBOARD_TUTOR_URL } from '../../config';
 
 test.describe('Dashboard de Tutor - Casos HU02', () => {
   test('CP-HU-02-R1: Visualización Dashboard con ofertas publicadas', async ({ page }) => {

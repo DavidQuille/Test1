@@ -2,7 +2,7 @@
 // case: CP-HU-01-R2 - Bloqueo por título de oferta vacío
 
 import { test, expect } from '@playwright/test';
-import { DASHBOARD_TUTOR_URL } from '../config';
+import { DASHBOARD_TUTOR_URL } from '../../config';
 
 test.describe('HU01 - Publicación de Ofertas de Tutoría', () => {
   test('CP-HU-01-R2: Bloqueo por título de oferta vacío', async ({ page }) => {

@@ -11,3 +11,4 @@ export const BASE_URL = 'http://localhost:3001';
 // export const BASE_URL = 'https://politutorias-frontend.vercel.app';
 
 export const DASHBOARD_TUTOR_URL = `${BASE_URL}/dashboard/tutor`;
+export const ENCUENTRA_TUTORIA_URL = `${BASE_URL}/encuentra-tutoria`;

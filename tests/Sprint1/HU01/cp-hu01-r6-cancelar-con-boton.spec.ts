@@ -1,22 +1,22 @@
 // spec: specs/CasosHU01.md
-// case: CP-HU-01-R7 - Cancelar con el botón 'X'
+// case: CP-HU-01-R6 - Cancelar con el botón 'Cancelar'
 
 import { test, expect } from '@playwright/test';
-import { DASHBOARD_TUTOR_URL } from '../config';
+import { DASHBOARD_TUTOR_URL } from '../../config';
 
 test.describe('HU01 - Publicación de Ofertas de Tutoría', () => {
-  test('CP-HU-01-R7: Cancelar creación de oferta con botón X', async ({ page }) => {
+  test('CP-HU-01-R6: Cancelar creación de oferta con botón Cancelar', async ({ page }) => {
     // 1. Navigate to the tutor dashboard
     await page.goto(DASHBOARD_TUTOR_URL);
 
     // 2. Click to open the new offer modal
     await page.getByRole('button', { name: '+ Nueva Oferta' }).click();
 
-    // 3. Enter the title "Prueba de Cierre con X"
-    await page.getByRole('textbox', { name: 'Ej. Cálculo Vectorial, Física' }).fill('Prueba de Cierre con X');
+    // 3. Enter the title "Prueba de Cancelación"
+    await page.getByRole('textbox', { name: 'Ej. Cálculo Vectorial, Física' }).fill('Prueba de Cancelación');
 
-    // 4. Click the X button to close the modal
-    await page.getByRole('button', { name: 'Cerrar modal' }).click();
+    // 4. Click the Cancel button to close the modal
+    await page.getByRole('button', { name: 'Cancelar' }).click();
 
     // Verify the modal is closed
     await expect(page.getByRole('heading', { name: 'Nueva Oferta de Tutoría' })).not.toBeVisible();

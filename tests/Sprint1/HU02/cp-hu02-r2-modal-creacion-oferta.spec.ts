@@ -3,7 +3,7 @@
 // title: Redirección al modal de creación de oferta desde el dashboard con ofertas
 
 import { test, expect } from '@playwright/test';
-import { DASHBOARD_TUTOR_URL } from '../config';
+import { DASHBOARD_TUTOR_URL } from '../../config';
 
 test.describe('Dashboard de Tutor - Casos HU02', () => {
   test('CP-HU-02-R2: Redirección al modal de creación de oferta', async ({ page }) => {

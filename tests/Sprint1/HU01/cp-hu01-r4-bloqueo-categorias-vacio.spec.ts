@@ -2,7 +2,7 @@
 // case: CP-HU-01-R4 - Bloqueo por categorías vacías
 
 import { test, expect } from '@playwright/test';
-import { DASHBOARD_TUTOR_URL } from '../config';
+import { DASHBOARD_TUTOR_URL } from '../../config';
 
 test.describe('HU01 - Publicación de Ofertas de Tutoría', () => {
   test('CP-HU-01-R4: Bloqueo por no seleccionar categorías', async ({ page }) => {

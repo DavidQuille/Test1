@@ -2,7 +2,7 @@
 // case: CP-HU-01-R3 - Bloqueo por precio por hora inválido
 
 import { test, expect } from '@playwright/test';
-import { DASHBOARD_TUTOR_URL } from '../config';
+import { DASHBOARD_TUTOR_URL } from '../../config';
 
 test.describe('HU01 - Publicación de Ofertas de Tutoría', () => {
   test('CP-HU-01-R3: Bloqueo por precio por hora inválido (fuera de rango)', async ({ page }) => {

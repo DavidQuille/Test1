@@ -2,7 +2,7 @@
 // case: CP-HU-01-R9 - Bloqueo por l\u00edmite m\u00e1ximo de categor\u00edas
 
 import { test, expect } from '@playwright/test';
-import { DASHBOARD_TUTOR_URL } from '../config';
+import { DASHBOARD_TUTOR_URL } from '../../config';
 
 test.describe('HU01 - Publicaci\u00f3n de Ofertas de Tutor\u00eda', () => {
   test('CP-HU-01-R9: Bloqueo por l\u00edmite de categor\u00edas', async ({ page }) => {
