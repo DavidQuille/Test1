@@ -27,8 +27,11 @@ test.describe('HU27 - Filtrar ofertas por precio', () => {
     const resultados = page.locator('text=/\\d+ resultados/');
     const conteoTexto = await resultados.textContent();
     if (conteoTexto) {
-      const numeroResultados = parseInt(conteoTexto.match(/\d+/)[0]);
-      expect(numeroResultados).toBeGreaterThan(10); // Verificar que hay múltiples ofertas
+      const match = conteoTexto.match(/\d+/);
+      if (match) {
+        const numeroResultados = parseInt(match[0]);
+        expect(numeroResultados).toBeGreaterThan(10); // Verificar que hay múltiples ofertas
+      }
     }
     
     // VALIDACIÓN VISUAL: Ofertas desde $5/h hasta $20/h están visibles

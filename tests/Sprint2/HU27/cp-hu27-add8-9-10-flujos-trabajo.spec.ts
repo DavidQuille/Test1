@@ -26,7 +26,8 @@ test.describe('HU27 - Filtrar ofertas por precio', () => {
     // 5. Verificar que se muestran ofertas
     const resultadosConOfertas = page.locator('text=/\\d+ resultados/');
     const conteoInicialTexto = await resultadosConOfertas.textContent();
-    const conteoInicial = conteoInicialTexto ? parseInt(conteoInicialTexto.match(/\d+/)[0]) : 0;
+    const match = conteoInicialTexto ? conteoInicialTexto.match(/\d+/) : null;
+    const conteoInicial = match ? parseInt(match[0]) : 0;
     expect(conteoInicial).toBeGreaterThan(0);
     
     // 6. Cambiar el slider para '$1.00' a '$4.00' (sin ofertas en el sistema)  
@@ -122,7 +123,8 @@ test.describe('HU27 - Filtrar ofertas por precio', () => {
     // 5. Verificar que se muestran solo ofertas filtradas
     const resultadosFiltrados = page.locator('text=/\\d+ resultados/');
     const conteoFiltradoTexto = await resultadosFiltrados.textContent();
-    const conteoFiltrado = conteoFiltradoTexto ? parseInt(conteoFiltradoTexto.match(/\d+/)[0]) : 0;
+    const matchFiltrado = conteoFiltradoTexto ? conteoFiltradoTexto.match(/\d+/) : null;
+    const conteoFiltrado = matchFiltrado ? parseInt(matchFiltrado[0]) : 0;
     
     // Verificar ofertas esperadas en el rango $7-$12
     const preciosEsperados = ['$7/h', '$8/h', '$9/h', '$10/h', '$11/h', '$12/h'];
@@ -143,7 +145,8 @@ test.describe('HU27 - Filtrar ofertas por precio', () => {
     // Al resetear el filtro, se muestran todas las ofertas disponibles del sistema
     const resultadosCompletos = page.locator('text=/\\d+ resultados/');
     const conteoCompletoTexto = await resultadosCompletos.textContent();
-    const conteoCompleto = conteoCompletoTexto ? parseInt(conteoCompletoTexto.match(/\d+/)[0]) : 0;
+    const matchCompleto = conteoCompletoTexto ? conteoCompletoTexto.match(/\d+/) : null;
+    const conteoCompleto = matchCompleto ? parseInt(matchCompleto[0]) : 0;
     
     expect(conteoCompleto).toBeGreaterThan(conteoFiltrado);
     

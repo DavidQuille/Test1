@@ -83,8 +83,11 @@ test.describe('HU27 - Filtrar ofertas por precio', () => {
       
       // VALIDACIÓN VISUAL: El listado vuelve a mostrar todas las ofertas (22 resultados)
       if (conteoFinal) {
-        const numeroResultados = parseInt(conteoFinal.match(/\d+/)[0]);
-        expect(numeroResultados).toBe(22); // Todas las ofertas disponibles
+        const match = conteoFinal.match(/\d+/);
+        if (match) {
+          const numeroResultados = parseInt(match[0]);
+          expect(numeroResultados).toBe(22); // Todas las ofertas disponibles
+        }
       }
       
       // El slider de precio vuelve a su rango completo
