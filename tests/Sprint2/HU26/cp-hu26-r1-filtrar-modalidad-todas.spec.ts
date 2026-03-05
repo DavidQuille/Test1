@@ -1,0 +1,24 @@
+// spec: specs/Sprint2/CasosHU26.md
+// seed: tests/seed.spec.ts
+
+import { test, expect } from '@playwright/test';
+import { ENCUENTRA_TUTORIA_URL } from '../../config';
+
+test.describe('Filtrar ofertas por modalidad', () => {
+  test('CP-HU-26-R1: Filtrar ofertas por modalidad Todas', async ({ page }) => {
+    // 1. Iniciar sesión como Estudiante.
+    // 2. Navegar a la interfaz "Encuentra tu Tutoría".
+    await page.goto(ENCUENTRA_TUTORIA_URL);
+
+    // 3. Hacer clic en el botón filtro 'Todas' en la sección 'Modalidad'.
+    await page.getByTestId('filter-modalidad-todas').click();
+
+    // Verificar que se muestran ofertas bajo el filtro aplicado
+    const resultadosText = page.locator(':text("resultados")').first();
+    await expect(resultadosText).toBeVisible();
+
+    // Verificar que se muestran ofertas en la página
+    const offerHeadings = page.getByRole('heading', { level: 3 });
+    await expect(offerHeadings).not.toHaveCount(0);
+  });
+});
