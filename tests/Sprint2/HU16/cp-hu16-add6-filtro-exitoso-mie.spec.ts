@@ -1,0 +1,22 @@
+import { test, expect } from '@playwright/test';
+
+test.describe('Disponibilidad - Filtro de Día', () => {
+  test('CP-HU-16-ADD6: Filtrar ofertas exitosamente por un día con coincidencias (Mié)', async ({ page }) => {
+    // 1. Navegar a la interfaz de "Encuentra tu Tutoría"
+    await page.goto('https://politutorias-frontend.vercel.app/encuentra-tutoria');
+    
+    // 2. Hacer clic en el botón 'Mié' en la sección "Disponibilidad"
+    const mieButton = page.getByTestId('filter-day-mie');
+    await mieButton.click();
+    
+    // Expected Results:
+    // - La lista de ofertas se filtra mostrando las que tienen disponibilidad el día 'Mié'
+    // Verificar que el filtro activo está visible
+    const filterTag = page.getByText('Mié').first();
+    await expect(filterTag).toBeVisible();
+    
+    // - Verificar que hay resultados para Mié (12 resultados)
+    const results = page.getByText(/^12 resultados$/);
+    await expect(results).toBeVisible();
+  });
+});
