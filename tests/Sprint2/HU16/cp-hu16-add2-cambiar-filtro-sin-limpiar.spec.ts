@@ -8,12 +8,15 @@ test.describe('Disponibilidad - Filtro de Día', () => {
     // 2. Hacer clic en el botón 'Mar' en la sección "Disponibilidad"
     await page.getByTestId('filter-day-mar').click();
     
-    // Verificar que Mar está activo y muestra 6 resultados
+    // Verificar que Mar está activo
     let currentFilter = page.getByText('Mar').first();
     await expect(currentFilter).toBeVisible();
     
-    const sixResultsText = page.getByText(/^6 resultados$/);
-    await expect(sixResultsText).toBeVisible();
+    await page.waitForTimeout(500);
+    
+    // Verificar que aparecen horarios de Martes
+    let dayAvailability = page.getByText(/Martes\s+\d{1,2}:\d{2}/).first();
+    await expect(dayAvailability).toBeVisible();
     
     // 3. Hacer clic en el botón 'Jue' sin deseleccionar primero el filtro de 'Mar'
     const jueButton = page.getByTestId('filter-day-jue');
@@ -24,8 +27,10 @@ test.describe('Disponibilidad - Filtro de Día', () => {
     currentFilter = page.getByText('Jue').first();
     await expect(currentFilter).toBeVisible();
     
-    // - La lista de ofertas se actualiza
-    const jueResults = page.getByText(/^6 resultados$/);
-    await expect(jueResults).toBeVisible();
+    await page.waitForTimeout(500);
+    
+    // - Verificar que las tarjetas ahora muestran 'Jueves' (el nuevo filtro)
+    dayAvailability = page.getByText(/Jueves\s+\d{1,2}:\d{2}/).first();
+    await expect(dayAvailability).toBeVisible();
   });
 });

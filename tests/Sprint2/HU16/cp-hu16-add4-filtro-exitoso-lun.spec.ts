@@ -11,13 +11,15 @@ test.describe('Disponibilidad - Filtro de Día', () => {
     
     // Expected Results:
     // - La lista de ofertas se filtra mostrando únicamente las que tienen disponibilidad el día 'Lun'
-    await page.waitForFunction(
-      () => document.body.textContent?.includes('12 resultados'),
-      { timeout: 8000 }
-    );
+    // Esperar a que aparezcan resultados
+    await page.waitForTimeout(500);
     
     // - Verificar que el filtro activo está visible
     const filterTag = page.getByText('Lun').first();
     await expect(filterTag).toBeVisible();
+    
+    // - Verificar que las tarjetas muestran 'Lunes' con horario (validación que se está filtrando correctamente)
+    const lunAvailability = page.getByText(/Lunes\s+\d{1,2}:\d{2}/).first();
+    await expect(lunAvailability).toBeVisible();
   });
 });

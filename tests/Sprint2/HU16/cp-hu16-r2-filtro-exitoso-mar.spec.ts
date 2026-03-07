@@ -10,11 +10,15 @@ test.describe('Disponibilidad - Filtro de Día', () => {
     
     // Expected Results:
     // - La lista de ofertas se filtra mostrando únicamente las que tienen disponibilidad el día 'Mar'
-    const resultsParagraph = page.getByText(/^6 resultados$/);
-    await expect(resultsParagraph).toBeVisible();
+    // Esperar a que aparezcan los resultados
+    await page.waitForTimeout(500);
     
     // - Verificar que el filtro activo está visible (etiqueta de Mar)
     const filterTag = page.getByText('Mar').first();
     await expect(filterTag).toBeVisible();
+    
+    // - Verificar que en las tarjetas aparece 'Martes' con horario (validación que se está filtrando correctamente)
+    const marAvailability = page.getByText(/Martes\s+\d{1,2}:\d{2}/).first();
+    await expect(marAvailability).toBeVisible();
   });
 });

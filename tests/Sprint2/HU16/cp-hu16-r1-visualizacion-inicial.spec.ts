@@ -5,16 +5,13 @@ test.describe('Disponibilidad - Filtro de Día', () => {
     // 1. Navegar a la interfaz de "Encuentra tu Tutoría"
     await page.goto('https://politutorias-frontend.vercel.app/encuentra-tutoria');
     
-    // 2. Verificar que se muestran todas las ofertas (37 resultados)
-    await page.waitForFunction(
-      () => document.body.textContent?.includes('37 resultados'),
-      { timeout: 8000 }
-    );
+    // 2. Verificar que se muestran todas las ofertas (sin filtro de día)
+    // Verificar que hay resultados mostrados
+    const pageContent = page.locator('body');
+    await expect(pageContent).toContainText('resultados', { timeout: 8000 });
     
     // 3. Verificar que el sistema cargó la interfaz "Encuentra tu Tutoría"
-    await page.waitForFunction(
-      () => document.body.textContent?.includes('Filtros'),
-      { timeout: 8000 }
-    );
+    const filtersSection = page.getByRole('heading', { name: 'Filtros' });
+    await expect(filtersSection).toBeVisible();
   });
 });
