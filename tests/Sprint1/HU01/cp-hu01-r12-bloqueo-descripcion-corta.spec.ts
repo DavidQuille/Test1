@@ -1,3 +1,4 @@
+import { loginAndGoto } from '../../auth';
 // spec: specs/CasosHU01.md
 // case: CP-HU-01-R12 - Bloqueo por Descripción demasiado corta
 
@@ -7,7 +8,7 @@ import { DASHBOARD_TUTOR_URL } from '../../config';
 test.describe('HU01 - Publicación de Ofertas de Tutoría', () => {
   test('CP-HU-01-R12: Bloqueo por descripción muy corta (menos de 30 caracteres)', async ({ page }) => {
     // 1. Navigate to tutor dashboard
-    await page.goto(DASHBOARD_TUTOR_URL);
+    await loginAndGoto(page, DASHBOARD_TUTOR_URL);
 
     // 2. Open modal to test short description validation
     await page.getByRole('button', { name: '+ Nueva Oferta' }).click();

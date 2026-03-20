@@ -1,3 +1,4 @@
+import { loginAndGoto } from '../../auth';
 import { test, expect } from '@playwright/test';
 import { ENCUENTRA_TUTORIA_URL } from '../../config';
 
@@ -6,7 +7,7 @@ import { ENCUENTRA_TUTORIA_URL } from '../../config';
 
 test.describe('HU27 - Filtrar ofertas por precio', () => {
   test.beforeEach(async ({ page }) => {
-    await page.goto(ENCUENTRA_TUTORIA_URL);
+    await loginAndGoto(page, ENCUENTRA_TUTORIA_URL);
     await page.waitForLoadState('networkidle');
   });
 

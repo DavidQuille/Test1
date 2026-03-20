@@ -1,3 +1,4 @@
+import { loginAndGoto } from '../../auth';
 ﻿// spec: specs/Sprint1/CasosHU03.md
 // case: CP-HU-03-R1
 
@@ -7,7 +8,7 @@ import { ENCUENTRA_TUTORIA_URL } from '../../config';
 test.describe('Verificación de la visualización inicial de ofertas en la Página 1', () => {
   test('CP-HU-03-R1: Verificación de la visualización inicial de ofertas en la Página 1', async ({ page }) => {
     // 1. Navegar a la pantalla 'Encuentra tu Tutoría' (Home Estudiante)
-    await page.goto(ENCUENTRA_TUTORIA_URL);
+    await loginAndGoto(page, ENCUENTRA_TUTORIA_URL);
 
     // 2. Se visualiza la pantalla 'Encuentra tu Tutoría'
     await expect(page).toHaveURL(ENCUENTRA_TUTORIA_URL);

@@ -1,3 +1,4 @@
+import { loginAndGoto } from '../../auth';
 // spec: specs/Sprint2/CasosHu05.md
 // seed: tests/seed.spec.ts
 
@@ -7,7 +8,7 @@ test.describe('Visualización detallada del perfil del tutor en la pantalla de o
   test('CP-HU-05-R1: Visualizar información detallada del tutor', async ({ page }) => {
     // 1. Iniciar sesión como Estudiante - Ya viene logueado desde el seed
     // 2. Navegar a la pantalla principal 'Inicio' o donde se listan las ofertas de tutoría
-    await page.goto('https://politutorias-frontend.vercel.app/encuentra-tutoria');
+    await loginAndGoto(page, 'https://politutorias-frontend.vercel.app/encuentra-tutoria');
     
     // Esperar a que se carguen las ofertas
     const mainContent = page.locator('main').first();

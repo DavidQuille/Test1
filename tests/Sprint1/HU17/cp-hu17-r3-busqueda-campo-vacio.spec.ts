@@ -1,3 +1,4 @@
+import { loginAndGoto } from '../../auth';
 // spec: specs/Sprint1/CasosHU17.md
 // seed: tests/seed.spec.ts
 
@@ -6,7 +7,7 @@ import { test, expect } from '@playwright/test';
 test.describe('HU17 - Búsqueda de Tutorías', () => {
   test('Búsqueda con campo de texto vacío', async ({ page }) => {
     // Navigate to encuentra-tutoria page
-    await page.goto('http://localhost:3001/encuentra-tutoria');
+    await loginAndGoto(page, 'http://localhost:3001/encuentra-tutoria');
 
     // Press Enter with empty search field
     await page.keyboard.press('Enter');

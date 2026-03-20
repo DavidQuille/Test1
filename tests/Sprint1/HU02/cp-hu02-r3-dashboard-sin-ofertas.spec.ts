@@ -1,3 +1,4 @@
+import { loginAndGoto } from '../../auth';
 // spec: specs/CasosHU02.md
 // case: CP-HU-02-R3
 // title: Visualización del Dashboard de Tutor sin ofertas publicadas (Estado Vacío)
@@ -11,7 +12,7 @@ test.describe('Dashboard de Tutor - Casos HU02', () => {
     // pero otros tests han creado ofertas, por lo que el estado vac\u00edo ya no est\u00e1 disponible.
     // Para que este test funcione, se necesitar\u00eda una base de datos limpia o aislamiento de datos.
     // 1. Navegar a la URL del dashboard del tutor
-    await page.goto(DASHBOARD_TUTOR_URL);
+    await loginAndGoto(page, DASHBOARD_TUTOR_URL);
 
     // 2. Esperar a que la página cargue completamente
     await page.waitForLoadState('networkidle');

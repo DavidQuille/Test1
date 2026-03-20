@@ -1,3 +1,4 @@
+import { loginAndGoto } from '../../auth';
 // spec: specs/Sprint2/CasosHU42.md
 // case: CP-HU-42-R1
 
@@ -8,7 +9,7 @@ import { getNombreAleatorio, getNumeroWhatsAppAleatorio, getBiografiaAleatoria }
 test.describe('HU42 - Detalles Profesionales', () => {
   test('CP-HU-42-R1: Finalización Exitosa del Registro de Perfil de Tutor', async ({ page }) => {
     // 1. Iniciar sesión como Tutor (Paso 1 - Datos Básicos)
-    await page.goto(TUTOR_REGISTRO_URL);
+    await loginAndGoto(page, TUTOR_REGISTRO_URL);
     
     // 2. Llenar los campos obligatorios del Paso 1 con datos aleatorios
     const nombreAleatorio = getNombreAleatorio();

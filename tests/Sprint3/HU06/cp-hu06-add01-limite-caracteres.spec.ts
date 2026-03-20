@@ -1,3 +1,4 @@
+import { loginAndGoto } from '../../auth';
 // spec: specs/Sprint3/CasosHU06.md
 // seed: tests/seed.spec.ts
 
@@ -7,7 +8,7 @@ test.describe('Verificación de bloqueo por límite máximo de caracteres', () =
   test('CP-HU-06-ADD01: Verificación de bloqueo por límite máximo de caracteres en mensaje de solicitud', async ({ page }) => {
     // 1. Iniciar sesión como Estudiante
     // 2. Navegar a una tutoría
-    await page.goto('https://politutorias-frontend.vercel.app/encuentra-tutoria');
+    await loginAndGoto(page, 'https://politutorias-frontend.vercel.app/encuentra-tutoria');
     
     const searchInput = page.locator('input[placeholder*="Buscar"]').first();
     await searchInput.fill('Álgebra');

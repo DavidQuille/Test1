@@ -27,3 +27,21 @@ export const CREDENTIALS = {
 // Alias por rol
 export const TUTOR = CREDENTIALS.TUTOR_1;
 export const STUDENT = CREDENTIALS.STUDENT;
+
+export const getCredentialsByUrl = (url: string) => {
+  const normalizedUrl = url.toLowerCase();
+
+  if (normalizedUrl.includes('encuentra')) {
+    return STUDENT;
+  }
+
+  if (
+    normalizedUrl.includes('/dashboard/tutor') ||
+    normalizedUrl.includes('/tutor/') ||
+    normalizedUrl.includes('/bandeja')
+  ) {
+    return TUTOR;
+  }
+
+  return STUDENT;
+};

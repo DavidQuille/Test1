@@ -1,3 +1,4 @@
+import { loginAndGoto } from '../../auth';
 // spec: specs/Sprint2/CasosHU32.md
 // seed: tests/seed.spec.ts
 
@@ -7,7 +8,7 @@ test.describe('Verificación de visualización de detalles de oferta', () => {
   test('CP-HU-32-R1: Verificar la visualización de los detalles de una oferta al hacer clic en su tarjeta', async ({ page }) => {
     // 1. Iniciar sesión como Estudiante - Ya viene logueado desde el seed
     // 2. Navegar a la pantalla principal de "E. Home Estudiante"
-    await page.goto('https://politutorias-frontend.vercel.app/encuentra-tutoria');
+    await loginAndGoto(page, 'https://politutorias-frontend.vercel.app/encuentra-tutoria');
     
     // Esperar a que se carguen las ofertas
     const mainContent = page.locator('main').first();
@@ -66,7 +67,7 @@ test.describe('Verificación de visualización de detalles de oferta', () => {
   test('CP-HU-32-R2: Verificar el regreso a la lista principal de ofertas desde la pantalla de detalles', async ({ page }) => {
     // 1. Iniciar sesión como Estudiante - Ya viene logueado desde el seed
     // 2. Navegar a la pantalla principal de "E. Home Estudiante"
-    await page.goto('https://politutorias-frontend.vercel.app/encuentra-tutoria');
+    await loginAndGoto(page, 'https://politutorias-frontend.vercel.app/encuentra-tutoria');
     
     // Esperar a que se carguen las ofertas
     const mainContent = page.locator('main').first();

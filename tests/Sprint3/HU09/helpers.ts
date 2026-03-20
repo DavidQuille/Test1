@@ -1,3 +1,4 @@
+import { loginAndGoto } from '../../auth';
 import { expect, Page } from '@playwright/test';
 
 import {
@@ -9,7 +10,7 @@ import {
 const OFFER_URLS = [OFERTA_HU09_PRIMARIA_URL, OFERTA_HU09_SECUNDARIA_URL];
 
 export async function gotoInbox(page: Page) {
-  await page.goto(BANDEJA_ENTRADA_URL);
+  await loginAndGoto(page, BANDEJA_ENTRADA_URL);
   await page.waitForLoadState('networkidle');
 }
 

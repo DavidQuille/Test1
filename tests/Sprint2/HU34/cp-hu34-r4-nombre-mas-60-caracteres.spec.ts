@@ -1,3 +1,4 @@
+import { loginAndGoto } from '../../auth';
 // spec: specs/Sprint2/CasosHU34.md
 // case: CP-HU-34-R4
 
@@ -7,7 +8,7 @@ import { TUTOR_REGISTRO_URL } from '../../config';
 test.describe('Validación de Nombre Completo con más de 60 caracteres', () => {
   test('CP-HU-34-R4: Validación de Nombre Completo con más de 60 caracteres', async ({ page }) => {
     // 1. Navigate to tutor registration page
-    await page.goto(TUTOR_REGISTRO_URL);
+    await loginAndGoto(page, TUTOR_REGISTRO_URL);
 
     // 2. Enter a very long name (more than 60 characters)
     await page.getByRole('textbox', { name: 'Nombre Completo' }).fill('Este es un nombre muy largo que definitivamente excede los sesenta caracteres para una prueba de longitud máxima');

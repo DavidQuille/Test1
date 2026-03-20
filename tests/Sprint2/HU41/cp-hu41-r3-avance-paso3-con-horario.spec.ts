@@ -1,3 +1,4 @@
+import { loginAndGoto } from '../../auth';
 // spec: specs/Sprint2/CasosHU41.md
 // case: CP-HU-41-R3
 
@@ -7,7 +8,7 @@ import { TUTOR_REGISTRO_URL } from '../../config';
 test.describe('HU41 - Define tu Horario (Paso 2)', () => {
   test.fixme('CP-HU-41-R3: Verificar avance al Paso 3 Perfil Profesional con al menos un horario seleccionado', async ({ page }) => {
     // 1. Navegar a la página de registro de tutor
-    await page.goto(TUTOR_REGISTRO_URL);
+    await loginAndGoto(page, TUTOR_REGISTRO_URL);
 
     // 2. Llenar los campos del Paso 1 (Datos Básicos)
     await page.getByRole('textbox', { name: 'Nombre Completo' }).fill('Daniela Castro');

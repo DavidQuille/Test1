@@ -1,3 +1,4 @@
+import { loginAndGoto } from '../../auth';
 // spec: specs/Sprint2/CasosHU42.md
 // case: CP-HU-42-ADD6
 
@@ -8,7 +9,7 @@ import { getNombreAleatorio, getNumeroWhatsAppAleatorio, getBiografiaAleatoria }
 test.describe('HU42 - Detalles Profesionales (Casos Adicionales)', () => {
   test('CP-HU-42-ADD6: Agregar Múltiples Materias Exitosamente', async ({ page }) => {
     // 1. Navegar a Detalles Profesionales (Paso 3)
-    await page.goto(TUTOR_REGISTRO_URL);
+    await loginAndGoto(page, TUTOR_REGISTRO_URL);
     
     // Llenar Paso 1 con datos aleatorios
     await page.getByRole('textbox', { name: 'Nombre Completo' }).fill(getNombreAleatorio());

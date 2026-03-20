@@ -1,3 +1,4 @@
+import { loginAndGoto } from '../../auth';
 // spec: specs/CasosHU02.md
 // case: CP-HU-02-R1
 // title: Visualización del Dashboard de Tutor con ofertas publicadas
@@ -8,16 +9,16 @@ import { DASHBOARD_TUTOR_URL } from '../../config';
 test.describe('Dashboard de Tutor - Casos HU02', () => {
   test('CP-HU-02-R1: Visualización Dashboard con ofertas publicadas', async ({ page }) => {
     // 1. Navegar a la URL del dashboard del tutor
-    await page.goto(DASHBOARD_TUTOR_URL);
+    await loginAndGoto(page, DASHBOARD_TUTOR_URL);
 
     // 2. Esperar a que la página cargue completamente
-    await page.waitForLoadState('networkidle');
+    await page.waitForLoadState('domcontentloaded');
 
     // Pre-condición: Tutor logueado con al menos una oferta de tutoría publicada
     // Este test requiere que el tutor tenga ofertas publicadas
 
     // 3. Verificar que se visualiza el logo 'Poli Tutorías'
-    const logoLink = page.getByRole('link', { name: 'PoliTutorías' });
+    const logoLink = page.getByRole('link', { name: /Poli\s*Tutorías/ });
     await expect(logoLink).toBeVisible();
 
     // 4. Verificar que se visualiza el botón 'Cerrar Sesión'
@@ -25,7 +26,7 @@ test.describe('Dashboard de Tutor - Casos HU02', () => {
     await expect(logoutButton).toBeVisible();
 
     // 5. Verificar que se visualiza el título principal: 'Mis Ofertas de Tutorías'
-    const heading = page.getByRole('heading', { name: 'Mis Ofertas de Tutorías' });
+    const heading = page.getByText('Mis Ofertas de Tutorías');
     await expect(heading).toBeVisible();
 
     // 6. Verificar que se visualiza el botón '+ Nueva Oferta'

@@ -1,3 +1,4 @@
+import { loginAndGoto } from '../../auth';
 // spec: specs/Sprint2/CasosHU34.md
 // case: CP-HU-34-R2
 
@@ -7,7 +8,7 @@ import { TUTOR_REGISTRO_URL } from '../../config';
 test.describe('Validación de campos obligatorios vacíos al registrar Datos Básicos', () => {
   test('CP-HU-34-R2: Validación de campos obligatorios vacíos', async ({ page }) => {
     // 1. Navigate to the tutor registration page
-    await page.goto(TUTOR_REGISTRO_URL);
+    await loginAndGoto(page, TUTOR_REGISTRO_URL);
 
     // 7. Click 'Siguiente Disponibilidad' button without filling any fields
     await page.getByRole('button', { name: 'Siguiente Disponibilidad →' }).click();

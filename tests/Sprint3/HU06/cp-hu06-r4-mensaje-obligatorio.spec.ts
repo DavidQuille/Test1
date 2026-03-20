@@ -1,3 +1,4 @@
+import { loginAndGoto } from '../../auth';
 // spec: specs/Sprint3/CasosHU06.md
 // seed: tests/seed.spec.ts
 
@@ -7,7 +8,7 @@ test.describe('Verificación de mensaje obligatorio en solicitud de tutoría', (
   test('CP-HU-06-R4: Verificación de mensaje obligatorio en solicitud de tutoría (una modalidad)', async ({ page }) => {
     // 1. Iniciar sesión como Estudiante (ya viene logueado desde el seed)
     // 2. Navegar a la pantalla de "Detalle de Oferta" de una tutoría
-    await page.goto('https://politutorias-frontend.vercel.app/encuentra-tutoria');
+    await loginAndGoto(page, 'https://politutorias-frontend.vercel.app/encuentra-tutoria');
     
     // Buscar una tutoría
     const searchInput = page.locator('input[placeholder*="Buscar"]').first();

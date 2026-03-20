@@ -1,3 +1,4 @@
+import { loginAndGoto } from '../../auth';
 // spec: specs/Sprint2/CasosHU34.md
 // case: CP-HU-34-R7
 
@@ -7,7 +8,7 @@ import { TUTOR_REGISTRO_URL } from '../../config';
 test.describe('Validación de Número de WhatsApp con más de 13 dígitos', () => {
   test('CP-HU-34-R7: Validación de Número de WhatsApp con más de 13 dígitos', async ({ page }) => {
     // 1. Navigate to the tutor registration page
-    await page.goto(TUTOR_REGISTRO_URL);
+    await loginAndGoto(page, TUTOR_REGISTRO_URL);
 
     // 2. Enter 'Daniela Castro' in Nombre Completo field
     await page.getByRole('textbox', { name: 'Nombre Completo' }).fill('Daniela Castro');

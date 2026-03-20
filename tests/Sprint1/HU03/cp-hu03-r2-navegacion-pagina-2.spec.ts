@@ -1,3 +1,4 @@
+import { loginAndGoto } from '../../auth';
 ﻿// spec: specs/Sprint1/CasosHU03.md
 // case: CP-HU-03-R2
 
@@ -7,7 +8,7 @@ import { ENCUENTRA_TUTORIA_URL } from '../../config';
 test.describe('Verificación de la navegación a la Página 2 de ofertas mediante paginación', () => {
   test('CP-HU-03-R2: Verificación de la navegación a la Página 2 de ofertas mediante paginación', async ({ page }) => {
     // 1. Navegar a la pantalla 'Encuentra tu Tutoría' (Home Estudiante)
-    await page.goto(ENCUENTRA_TUTORIA_URL);
+    await loginAndGoto(page, ENCUENTRA_TUTORIA_URL);
 
     // Limpiar cualquier filtro aplicado
     const clearAllButton = page.locator('button', { hasText: 'Limpiar todos' });

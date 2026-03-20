@@ -1,3 +1,4 @@
+import { loginAndGoto } from '../../auth';
 // spec: specs/Sprint3/CasosHU33.md
 // seed: tests/seed.spec.ts
 
@@ -7,7 +8,7 @@ import { MIS_SOLICITUDES_URL } from '../../config';
 test.describe('Mis Solicitudes - Filtros', () => {
   test('CP-HU-33-R1: Verificar visualización del filtro Todas', async ({ page }) => {
     // Navegar a la pantalla de Mis Solicitudes
-    await page.goto(MIS_SOLICITUDES_URL);
+    await loginAndGoto(page, MIS_SOLICITUDES_URL);
 
     // Esperar a que carguen las solicitudes
     await new Promise(f => setTimeout(f, 3 * 1000));

@@ -1,9 +1,10 @@
+import { loginAndGoto } from '../../auth';
 import { test, expect } from '@playwright/test';
 
 test.describe('Disponibilidad - Filtro de Día', () => {
   test('CP-HU-16-ADD4: Filtrar ofertas exitosamente por un día con coincidencias (Lun)', async ({ page }) => {
     // 1. Navegar a la interfaz de "Encuentra tu Tutoría"
-    await page.goto('https://politutorias-frontend.vercel.app/encuentra-tutoria');
+    await loginAndGoto(page, 'https://politutorias-frontend.vercel.app/encuentra-tutoria');
     
     // 2. Hacer clic en el botón 'Lun' en la sección "Disponibilidad"
     const lunButton = page.getByTestId('filter-day-lun');

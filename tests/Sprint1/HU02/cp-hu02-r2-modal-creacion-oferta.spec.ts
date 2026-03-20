@@ -1,3 +1,4 @@
+import { loginAndGoto } from '../../auth';
 // spec: specs/CasosHU02.md
 // case: CP-HU-02-R2
 // title: Redirección al modal de creación de oferta desde el dashboard con ofertas
@@ -8,15 +9,16 @@ import { DASHBOARD_TUTOR_URL } from '../../config';
 test.describe('Dashboard de Tutor - Casos HU02', () => {
   test('CP-HU-02-R2: Redirección al modal de creación de oferta', async ({ page }) => {
     // 1. Navegar a la URL del dashboard del tutor
-    await page.goto(DASHBOARD_TUTOR_URL);
+    await loginAndGoto(page, DASHBOARD_TUTOR_URL);
 
     // 2. Esperar a que la página cargue completamente
-    await page.waitForLoadState('networkidle');
+    await page.waitForLoadState('domcontentloaded');
 
     // Pre-condición: El tutor está logueado y está en la sección "Mis Ofertas de Tutorías"
 
     // 3. Hacer clic en el botón "+ Nueva Oferta"
-    const newOfferButton = page.getByRole('button', { name: /Nueva Oferta/ });
+    const newOfferButton = page.getByRole('button', { name: /\+?\s*Nueva Oferta/i }).first();
+    await expect(newOfferButton).toBeVisible();
     await newOfferButton.click();
 
     // 4. Esperar a que se abra el modal de creación

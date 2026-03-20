@@ -1,3 +1,4 @@
+import { loginAndGoto } from '../../auth';
 // spec: specs/Sprint2/CasosHU41.md
 // case: CP-HU-41-R1
 
@@ -7,7 +8,7 @@ import { TUTOR_REGISTRO_URL } from '../../config';
 test.describe('HU41 - Define tu Horario (Paso 2)', () => {
   test('CP-HU-41-R1: Verificar bloqueo de navegación al intentar avanzar sin seleccionar horarios', async ({ page }) => {
     // 1. Navegar a la página de registro de tutor
-    await page.goto(TUTOR_REGISTRO_URL);
+    await loginAndGoto(page, TUTOR_REGISTRO_URL);
 
     // 2. Llenar los campos del Paso 1 (Datos Básicos)
     await page.getByRole('textbox', { name: 'Nombre Completo' }).fill('Daniela Castro');

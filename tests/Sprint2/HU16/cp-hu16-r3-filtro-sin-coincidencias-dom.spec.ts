@@ -1,9 +1,10 @@
+import { loginAndGoto } from '../../auth';
 import { test, expect } from '@playwright/test';
 
 test.describe('Disponibilidad - Filtro de Día', () => {
   test('CP-HU-16-R3: Filtrar ofertas por un día sin coincidencias y mostrar mensaje', async ({ page }) => {
     // 1. Navegar a la interfaz de "Encuentra tu Tutoría"
-    await page.goto('https://politutorias-frontend.vercel.app/encuentra-tutoria');
+    await loginAndGoto(page, 'https://politutorias-frontend.vercel.app/encuentra-tutoria');
     
     // 2. Hacer clic en el botón 'Dom' en la sección "Disponibilidad"
     await page.getByTestId('filter-day-dom').click();

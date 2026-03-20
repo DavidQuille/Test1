@@ -1,3 +1,4 @@
+import { loginAndGoto } from '../../auth';
 // spec: specs/Sprint2/CasosHU34.md
 // case: CP-HU-34-R10
 
@@ -7,7 +8,7 @@ import { TUTOR_REGISTRO_URL } from '../../config';
 test.describe('Validación de Biografía Corta con más de 300 caracteres', () => {
   test('CP-HU-34-R10: Validación de Biografía Corta con más de 300 caracteres', async ({ page }) => {
     // 1. Navigate to the tutor registration page
-    await page.goto(TUTOR_REGISTRO_URL);
+    await loginAndGoto(page, TUTOR_REGISTRO_URL);
 
     // 2. Enter 'Daniela Castro' in Nombre Completo field
     await page.getByRole('textbox', { name: 'Nombre Completo' }).fill('Daniela Castro');

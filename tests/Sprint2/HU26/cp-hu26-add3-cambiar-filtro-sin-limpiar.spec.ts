@@ -1,3 +1,4 @@
+import { loginAndGoto } from '../../auth';
 // spec: specs/Sprint2/CasosHU26.md
 // seed: tests/seed.spec.ts
 
@@ -8,7 +9,7 @@ test.describe('Filtrar ofertas por modalidad', () => {
   test('CP-HU-26-ADD3: Cambiar de un filtro a otro sin limpiar primero', async ({ page }) => {
     // 1. Iniciar sesión como Estudiante.
     // 2. Navegar a la interfaz "Encuentra tu Tutoría".
-    await page.goto(ENCUENTRA_TUTORIA_URL);
+    await loginAndGoto(page, ENCUENTRA_TUTORIA_URL);
 
     // 3. Hacer clic en el botón filtro 'Presencial' en la sección 'Modalidad'.
     await page.getByTestId('filter-modalidad-presencial').click();
