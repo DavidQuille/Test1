@@ -118,12 +118,12 @@ test.describe('HU42 - Finalización Registro Tutor', () => {
     await finalizarBtn.click({ force: true });
     await page.waitForTimeout(2000);
     
-    // Step 14: Verify registration completed - wait for page to load
-    await page.waitForLoadState('networkidle', { timeout: 10000 });
+    // Step 14: Verify registration completed successfully
+    // Should redirect to tutor dashboard
+    await page.waitForURL('**/dashboard/tutor**', { timeout: 5000 });
     
-    // Verify we're NOT at login/registro pages anymore
-    const url = page.url();
-    expect(!url.includes('/registro')).toBeTruthy();
-    expect(!url.includes('/iniciar-sesion')).toBeTruthy();
+    // Should not show error message
+    const errorMessages = page.locator('text=/error|Error/i');
+    await expect(errorMessages).not.toBeVisible();
   });
 });

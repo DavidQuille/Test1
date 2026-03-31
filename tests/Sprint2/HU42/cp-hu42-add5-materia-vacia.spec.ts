@@ -1,36 +1,83 @@
-import { loginAndGoto } from '../../auth';
+import { test, expect } from '@playwright/test';
+import { BASE_URL } from '../../config';
+
 // spec: specs/Sprint2/CasosHU42.md
 // case: CP-HU-42-ADD5
 
-import { test, expect } from '@playwright/test';
-import { TUTOR_REGISTRO_URL } from '../../config';
-import { getNombreAleatorio, getNumeroWhatsAppAleatorio, getBiografiaAleatoria } from './utils';
-
-test.describe('HU42 - Detalles Profesionales (Casos Adicionales)', () => {
+test.describe('HU42 - Detalles Profesionales', () => {
   test('CP-HU-42-ADD5: Intentar Agregar una Materia sin Escribir Nada', async ({ page }) => {
-    // 1. Navegar a Detalles Profesionales (Paso 3)
-    await loginAndGoto(page, TUTOR_REGISTRO_URL);
+    // Follow same setup as ADD1 to reach Paso 3
+    await page.goto(BASE_URL + '/registro');
+    await page.click('label:has-text("Tutor")');
     
-    // Llenar Paso 1 con datos aleatorios
-    await page.getByRole('textbox', { name: 'Nombre Completo' }).fill(getNombreAleatorio());
-    await page.getByRole('textbox', { name: 'Número de WhatsApp' }).fill(getNumeroWhatsAppAleatorio());
-    await page.getByLabel('Facultad').selectOption('FIS - Sistemas');
-    await page.getByLabel('Semestre Actual').selectOption('4° Semestre');
-    await page.getByRole('textbox', { name: 'Biografía Corta' }).fill(getBiografiaAleatoria());
+    const randomSuffix = Math.floor(Math.random() * 1000000);
+    const email = `d.q${randomSuffix}@epn.edu.ec`;
+    const password = '123456';
+    const uniquePhone = `59398${String(randomSuffix).padStart(7, '0')}`;
     
-    // Avanzar a Paso 2
-    await page.getByRole('button', { name: 'Siguiente Disponibilidad →' }).click();
-    await expect(page.getByRole('heading', { name: 'Define tu Horario' })).toBeVisible();
+    const emailInput = page.locator('input[placeholder*="tu.correo"]');
+    await emailInput.fill(email);
     
-    // Seleccionar un horario
-    const availabilityButtons = page.locator('button[class*="transition-colors"][class*="font-semibold"]').nth(5);
-    await availabilityButtons.click();
+    const passwordInput = page.locator('input[placeholder*="Mínimo"]');
+    await passwordInput.fill(password);
     
-    // Avanzar a Paso 3
-    await page.getByRole('button', { name: 'Siguiente Perfil Profesional →' }).click();
-    await expect(page.getByRole('heading', { name: 'Detalles Profesionales' })).toBeVisible();
+    const confirmPasswordInput = page.locator('input[placeholder*="Repite"]');
+    await confirmPasswordInput.fill(password);
     
-    // 3. Dejar el campo de materia vacío
+    await Promise.all([
+      page.click('button:has-text("Crear Cuenta")'),
+      page.waitForNavigation()
+    ]);
+    
+    await page.waitForSelector('text=Completa tu Perfil', { timeout: 10000 });
+    
+    const nameInput = page.locator('input[placeholder*="Ej. Daniela"]');
+    await nameInput.clear();
+    await page.waitForTimeout(300);
+    await nameInput.fill('David López');
+    await page.waitForSelector('text=Nombre válido', { timeout: 5000 });
+    
+    const whatsappInput = page.locator('input[placeholder*="593"]');
+    await whatsappInput.clear();
+    await page.waitForTimeout(300);
+    await whatsappInput.fill(uniquePhone);
+    await page.waitForSelector('text=Número válido', { timeout: 5000 });
+    
+    const facultadSelect = page.locator('select').first();
+    await facultadSelect.selectOption('FIEE - Eléctrica y Electrónica');
+    
+    const semestreSelect = page.locator('select').nth(1);
+    await semestreSelect.selectOption('7° Semestre');
+    
+    const bioInput = page.locator('textarea[placeholder*="Cuéntales"]');
+    await bioInput.clear();
+    await page.waitForTimeout(300);
+    await bioInput.fill('Soy especializado en matemáticas.');
+    await page.waitForSelector('text=Biografía válida', { timeout: 5000 });
+    
+    const siguienteBtn = page.locator('button:has-text("Siguiente")').first();
+    await siguienteBtn.waitFor({ state: 'visible' });
+    await siguienteBtn.scrollIntoViewIfNeeded();
+    await page.waitForTimeout(500);
+    await siguienteBtn.click({ force: true });
+    await page.waitForTimeout(1000);
+    
+    await page.waitForSelector('text=Define tu Horario', { timeout: 10000 });
+    
+    const horaRow = page.locator('tbody tr').filter({ hasText: '10:00' });
+    const lunesCell = horaRow.locator('td').nth(1);
+    await lunesCell.click();
+    
+    const finalizarDisponibilidadBtn = page.locator('button:has-text("Siguiente")').last();
+    await finalizarDisponibilidadBtn.waitFor({ state: 'visible' });
+    await finalizarDisponibilidadBtn.scrollIntoViewIfNeeded();
+    await page.waitForTimeout(500);
+    await finalizarDisponibilidadBtn.click({ force: true });
+    await page.waitForTimeout(2000);
+    
+    await page.waitForSelector('text=Detalles Profesionales', { timeout: 10000 });
+    
+    // Test ADD5: Intentar agregar materia vacia sin escribir nada
     const materiaInput = page.getByPlaceholder(/Escribe una materia/i);
     
     // Verificar que está vacío

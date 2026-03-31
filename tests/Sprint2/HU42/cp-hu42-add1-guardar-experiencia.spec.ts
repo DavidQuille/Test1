@@ -1,37 +1,106 @@
-import { loginAndGoto } from '../../auth';
+import { test, expect } from '@playwright/test';
+import { BASE_URL } from '../../config';
+
 // spec: specs/Sprint2/CasosHU42.md
 // case: CP-HU-42-ADD1
 
-import { test, expect } from '@playwright/test';
-import { TUTOR_REGISTRO_URL } from '../../config';
-import { getNombreAleatorio, getNumeroWhatsAppAleatorio, getBiografiaAleatoria } from './utils';
-
-test.describe('HU42 - Detalles Profesionales (Casos Adicionales)', () => {
-  test('CP-HU-42-ADD1: Guardar una Experiencia Exitosa con Todos los Campos Completos', async ({ page }) => {
-    // 1. Navegar a Detalles Profesionales (Paso 3)
-    await loginAndGoto(page, TUTOR_REGISTRO_URL);
+test.describe('HU42 - Detalles Profesionales', () => {
+  test('CP-HU-42-ADD1: Guardar una Experiencia Exitosa', async ({ page }) => {
+    // Step 1: Navigate to registro page
+    await page.goto(BASE_URL + '/registro');
     
-    // Llenar Paso 1 con datos aleatorios
-    await page.getByRole('textbox', { name: 'Nombre Completo' }).fill(getNombreAleatorio());
-    await page.getByRole('textbox', { name: 'Número de WhatsApp' }).fill(getNumeroWhatsAppAleatorio());
-    await page.getByLabel('Facultad').selectOption('FIS - Sistemas');
-    await page.getByLabel('Semestre Actual').selectOption('4° Semestre');
-    await page.getByRole('textbox', { name: 'Biografía Corta' }).fill(getBiografiaAleatoria());
+    // Step 2: Select Tutor role
+    await page.click('label:has-text("Tutor")');
     
-    // Avanzar a Paso 2
-    await page.getByRole('button', { name: 'Siguiente Disponibilidad →' }).click();
-    await expect(page.getByRole('heading', { name: 'Define tu Horario' })).toBeVisible();
+    // Step 3: Create account with unique email and phone
+    const randomSuffix = Math.floor(Math.random() * 1000000);
+    const email = `d.q${randomSuffix}@epn.edu.ec`;
+    const password = '123456';
+    const uniquePhone = `59398${String(randomSuffix).padStart(7, '0')}`;
     
-    // Seleccionar un horario
-    const availabilityButtons = page.locator('button[class*="transition-colors"][class*="font-semibold"]').nth(5);
-    await availabilityButtons.click();
+    // Fill registration form
+    const emailInput = page.locator('input[placeholder*="tu.correo"]');
+    await emailInput.fill(email);
     
-    // Avanzar a Paso 3
-    await page.getByRole('button', { name: 'Siguiente Perfil Profesional →' }).click();
-    await expect(page.getByRole('heading', { name: 'Detalles Profesionales' })).toBeVisible();
+    const passwordInput = page.locator('input[placeholder*="Mínimo"]');
+    await passwordInput.fill(password);
+    
+    const confirmPasswordInput = page.locator('input[placeholder*="Repite"]');
+    await confirmPasswordInput.fill(password);
+    
+    // Click Crear Cuenta and wait for navigation
+    await Promise.all([
+      page.click('button:has-text("Crear Cuenta")'),
+      page.waitForNavigation()
+    ]);
+    
+    // Step 4: Wait for Paso 1 (Datos Básicos) form to load
+    await page.waitForSelector('text=Completa tu Perfil', { timeout: 10000 });
+    
+    // Step 5: Fill Paso 1 data manually
+    const nameInput = page.locator('input[placeholder*="Ej. Daniela"]');
+    await nameInput.clear();
+    await page.waitForTimeout(300);
+    await nameInput.fill('David López');
+    
+    // Wait for name validation
+    await page.waitForSelector('text=Nombre válido', { timeout: 5000 });
+    
+    const whatsappInput = page.locator('input[placeholder*="593"]');
+    await whatsappInput.clear();
+    await page.waitForTimeout(300);
+    await whatsappInput.fill(uniquePhone);
+    
+    // Wait for whatsapp validation
+    await page.waitForSelector('text=Número válido', { timeout: 5000 });
+    
+    // Fill Facultad
+    const facultadSelect = page.locator('select').first();
+    await facultadSelect.selectOption('FIEE - Eléctrica y Electrónica');
+    
+    // Fill Semestre Actual
+    const semestreSelect = page.locator('select').nth(1);
+    await semestreSelect.selectOption('7° Semestre');
+    
+    const bioInput = page.locator('textarea[placeholder*="Cuéntales"]');
+    await bioInput.clear();
+    await page.waitForTimeout(300);
+    await bioInput.fill('Soy especializado en matemáticas con experiencia en educación.');
+    
+    // Wait for bio validation
+    await page.waitForSelector('text=Biografía válida', { timeout: 5000 });
+    
+    // Step 6: Click "Siguiente" button
+    const siguienteBtn = page.locator('button:has-text("Siguiente")').first();
+    await siguienteBtn.waitFor({ state: 'visible' });
+    await siguienteBtn.scrollIntoViewIfNeeded();
+    await page.waitForTimeout(500);
+    await siguienteBtn.click({ force: true });
+    await page.waitForTimeout(1000);
+    
+    // Wait for Paso 2 to load
+    await page.waitForSelector('text=Define tu Horario', { timeout: 10000 });
+    
+    // Step 7: Select time block for Paso 2
+    const horaRow = page.locator('tbody tr').filter({ hasText: '10:00' });
+    const lunesCell = horaRow.locator('td').nth(1);
+    await lunesCell.click();
+    
+    // Step 8: Click "Siguiente" button to advance to Paso 3
+    const finalizarDisponibilidadBtn = page.locator('button:has-text("Siguiente")').last();
+    await finalizarDisponibilidadBtn.waitFor({ state: 'visible' });
+    await finalizarDisponibilidadBtn.scrollIntoViewIfNeeded();
+    await page.waitForTimeout(500);
+    await finalizarDisponibilidadBtn.click({ force: true });
+    await page.waitForTimeout(2000);
+    
+    // Step 9: Wait for Paso 3 to load - Detalles Profesionales
+    await page.waitForSelector('text=Detalles Profesionales', { timeout: 10000 });
+    
+    // Now test ADD1: Guardar Experiencia
     
     // 3. Abrir modal de Nueva Experiencia
-    await page.getByRole('button', { name: '+ Añadir Experiencia' }).click();
+    await page.getByRole('button', { name: '+ Añadir Experiencia' }).first().click();
     await expect(page.getByRole('heading', { name: 'Nueva Experiencia' })).toBeVisible();
     
     // 4. Ingresar 'Tutor de Programación' en Puesto
