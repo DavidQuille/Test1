@@ -1,16 +1,23 @@
 import { loginAndGoto } from '../../auth';
+import { ENCUENTRA_TUTORIA_URL } from '../../config';
 import { test, expect } from '@playwright/test';
 
 test.describe('Disponibilidad - Filtro de Día', () => {
   test('CP-HU-16-ADD1: Limpiar filtro de disponibilidad usando botón X', async ({ page }) => {
     // 1. Navegar a la interfaz de "Encuentra tu Tutoría"
-    await loginAndGoto(page, 'https://politutorias-frontend.vercel.app/encuentra-tutoria');
+    await loginAndGoto(page, ENCUENTRA_TUTORIA_URL);
+    
+    // Esperar a que se carguen las ofertas
+    await page.waitForLoadState('networkidle', { timeout: 15000 }).catch(() => {});
+    await page.waitForSelector('[href*="/ofertas/"]', { timeout: 10000 });
     
     // 2. Hacer clic en el botón 'Mar' en la sección "Disponibilidad"
-    await page.getByTestId('filter-day-mar').click();
+    const marButton = page.getByTestId('filter-day-mar');
+    await expect(marButton).toBeVisible({ timeout: 5000 });
+    await marButton.click();
     
     // Verificar que el filtro está activo
-    await page.waitForTimeout(500);
+    await page.waitForTimeout(1000);
     
     // Verificar que aparecen horarios de Martes en las tarjetas
     const marAvailability = page.getByText(/Martes\s+\d{1,2}:\d{2}/).first();

@@ -1,20 +1,26 @@
 import { loginAndGoto } from '../../auth';
+import { ENCUENTRA_TUTORIA_URL } from '../../config';
 import { test, expect } from '@playwright/test';
 
 test.describe('Disponibilidad - Filtro de Día', () => {
   test('CP-HU-16-ADD3: Deseleccionar un filtro haciendo clic nuevamente en el mismo día', async ({ page }) => {
     // 1. Navegar a la interfaz de "Encuentra tu Tutoría"
-    await loginAndGoto(page, 'https://politutorias-frontend.vercel.app/encuentra-tutoria');
+    await loginAndGoto(page, ENCUENTRA_TUTORIA_URL);
+    
+    // Esperar a que se carguen las ofertas
+    await page.waitForLoadState('networkidle', { timeout: 15000 }).catch(() => {});
+    await page.waitForSelector('[href*="/ofertas/"]', { timeout: 10000 });
     
     // 2. Hacer clic en el botón 'Sáb' en la sección "Disponibilidad"
     const sabButton = page.getByTestId('filter-day-sab');
+    await expect(sabButton).toBeVisible({ timeout: 5000 });
     await sabButton.click();
     
     // Verificar que Sáb está activo
     let currentFilter = page.getByText('Sáb').first();
     await expect(currentFilter).toBeVisible();
     
-    await page.waitForTimeout(500);
+    await page.waitForTimeout(1000);
     
     // Verificar simplemente que hay resultados cuando Sáb está seleccionado
     // Buscar algún patrón de hora para verificar que hay resultados

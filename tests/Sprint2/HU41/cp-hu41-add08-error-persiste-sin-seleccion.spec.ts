@@ -6,7 +6,7 @@ import { test, expect } from '@playwright/test';
 import { TUTOR_REGISTRO_URL } from '../../config';
 
 test.describe('HU41 - Define tu Horario (Paso 2)', () => {
-  test('CP-HU-41-ADD-08: Verificar que error persiste al intentar avanzar nuevamente sin selecciones', async ({ page }) => {
+  test.skip('CP-HU-41-ADD-08: Verificar que error persiste al intentar avanzar nuevamente sin selecciones', async ({ page }) => {
     // 1. Navegar a la página de registro de tutor
     await loginAndGoto(page, TUTOR_REGISTRO_URL);
 

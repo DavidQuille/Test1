@@ -2,20 +2,13 @@
 // seed: tests/seed.spec.ts
 
 import { test, expect } from '@playwright/test';
+import { loginAndGoto } from '../../../auth';
+import { TUTOR_HISTORIAL_URL, BASE_URL } from '../../../config';
 
 test.describe('CP-HU-39-R1: Visualización inicial del Historial de Tutorías con menos de 5 registros', () => {
   test('Visualización inicial del Historial de Tutorías con menos de 5 registros', async ({ page }) => {
     // 1. Iniciar sesión como Tutor.
-    await page.goto('https://politutorias-frontend.vercel.app/');
-    await page.getByRole('textbox', { name: 'Correo Electrónico' }).fill('daniel.v@epn.edu.ec');
-    await page.getByRole('textbox', { name: 'Contraseña' }).fill('123456');
-    await page.getByRole('button', { name: 'Iniciar Sesión' }).click();
-
-    // 2. Hacer clic en la opción de menú 'Historial' en la barra de navegación superior.
-    await page.getByRole('link', { name: 'Historial' }).click();
-
-    // Verificar redirección a pantalla 'Historial de Tutorías Impartidas'
-    await expect(page).toHaveURL('https://politutorias-frontend.vercel.app/tutor/historial');
+    await loginAndGoto(page, TUTOR_HISTORIAL_URL);
 
     // Verificar logo 'Poli Tutorías' y menú de navegación superior
     await expect(page.getByRole('link', { name: 'Poli Tutorías' })).toBeVisible();

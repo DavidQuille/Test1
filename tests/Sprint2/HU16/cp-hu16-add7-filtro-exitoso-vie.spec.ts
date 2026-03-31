@@ -1,13 +1,19 @@
 import { loginAndGoto } from '../../auth';
+import { ENCUENTRA_TUTORIA_URL } from '../../config';
 import { test, expect } from '@playwright/test';
 
 test.describe('Disponibilidad - Filtro de Día', () => {
   test('CP-HU-16-ADD7: Filtrar ofertas exitosamente por un día con coincidencias (Vie)', async ({ page }) => {
     // 1. Navegar a la interfaz de "Encuentra tu Tutoría"
-    await loginAndGoto(page, 'https://politutorias-frontend.vercel.app/encuentra-tutoria');
+    await loginAndGoto(page, ENCUENTRA_TUTORIA_URL);
+    
+    // Esperar a que se carguen las ofertas
+    await page.waitForLoadState('networkidle', { timeout: 15000 }).catch(() => {});
+    await page.waitForSelector('[href*="/ofertas/"]', { timeout: 10000 });
     
     // 2. Hacer clic en el botón 'Vie' en la sección "Disponibilidad"
     const vieButton = page.getByTestId('filter-day-vie');
+    await expect(vieButton).toBeVisible({ timeout: 5000 });
     await vieButton.click();
     
     // Expected Results:
@@ -17,7 +23,7 @@ test.describe('Disponibilidad - Filtro de Día', () => {
     await expect(filterTag).toBeVisible();
     
     // - Verificar que hay resultados
-    await page.waitForTimeout(500);
+    await page.waitForTimeout(1000);
     
     // - Verificar que en las tarjetas aparece información de horarios (validación que se está filtrando correctamente)
     const availability = page.getByText(/\d{1,2}:\d{2}/).first();

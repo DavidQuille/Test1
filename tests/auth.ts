@@ -20,3 +20,22 @@ export async function loginAndGoto(page: Page, targetUrl: string) {
 
   await page.goto(targetUrl);
 }
+
+export async function createTutorAccount(page: Page, email: string, password: string) {
+  // Navigate to registration page
+  await page.goto(`${BASE_URL}/registro`);
+  
+  // Click on Tutor radio button
+  await page.getByRole('radio', { name: 'Tutor' }).click();
+  
+  // Fill email and password
+  await page.getByRole('textbox', { name: 'Correo Electrónico' }).fill(email);
+  await page.getByRole('textbox', { name: 'Contraseña' }).first().fill(password);
+  await page.getByRole('textbox', { name: 'Confirmar Contraseña' }).fill(password);
+  
+  // Click "Crear Cuenta" button
+  await page.getByRole('button', { name: 'Crear Cuenta' }).click();
+  
+  // Wait for redirect to "Completa tu Perfil" (Paso 1)
+  await page.waitForURL(`${BASE_URL}/**`, { timeout: 10000 });
+}

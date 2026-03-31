@@ -1,14 +1,15 @@
-import { loginAndGoto } from '../../auth';
+import { test, expect } from '@playwright/test';
+import { createTutorAccount } from '../../auth';
+
 // spec: specs/Sprint2/CasosHU34.md
 // case: CP-HU-34-R10
 
-import { test, expect } from '@playwright/test';
-import { TUTOR_REGISTRO_URL } from '../../config';
-
 test.describe('Validación de Biografía Corta con más de 300 caracteres', () => {
   test('CP-HU-34-R10: Validación de Biografía Corta con más de 300 caracteres', async ({ page }) => {
-    // 1. Navigate to the tutor registration page
-    await loginAndGoto(page, TUTOR_REGISTRO_URL);
+    // Create a tutor account first
+    const timestamp = Date.now();
+    const uniqueEmail = `d.q.r10.${timestamp}@epn.edu.ec`;
+    await createTutorAccount(page, uniqueEmail, '123456');
 
     // 2. Enter 'Daniela Castro' in Nombre Completo field
     await page.getByRole('textbox', { name: 'Nombre Completo' }).fill('Daniela Castro');
@@ -32,7 +33,7 @@ test.describe('Validación de Biografía Corta con más de 300 caracteres', () =
     expect(bioValue.length).toBeLessThanOrEqual(300);
 
     // - Counter '300/300' is displayed below 'Biografía Corta' field
-    await expect(page.locator('text=300/300')).toBeVisible();
+    await expect(page.getByText('300/300')).toBeVisible();
 
     // - System remains on 'Completa tu Perfil' screen
     await expect(page.getByRole('heading', { name: 'Completa tu Perfil' })).toBeVisible();

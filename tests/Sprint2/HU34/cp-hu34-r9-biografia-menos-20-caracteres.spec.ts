@@ -1,14 +1,15 @@
-import { loginAndGoto } from '../../auth';
+import { test, expect } from '@playwright/test';
+import { createTutorAccount } from '../../auth';
+
 // spec: specs/Sprint2/CasosHU34.md
 // case: CP-HU-34-R9
 
-import { test, expect } from '@playwright/test';
-import { TUTOR_REGISTRO_URL } from '../../config';
-
 test.describe('Validación de Biografía Corta con menos de 20 caracteres', () => {
   test('CP-HU-34-R9: Validación de Biografía Corta con menos de 20 caracteres', async ({ page }) => {
-    // 1. Navigate to the tutor registration page
-    await loginAndGoto(page, TUTOR_REGISTRO_URL);
+    // Create a tutor account first
+    const timestamp = Date.now();
+    const uniqueEmail = `d.q.r9.${timestamp}@epn.edu.ec`;
+    await createTutorAccount(page, uniqueEmail, '123456');
 
     // 2. Enter 'Daniela Castro' in Nombre Completo field
     await page.getByRole('textbox', { name: 'Nombre Completo' }).fill('Daniela Castro');
@@ -33,6 +34,6 @@ test.describe('Validación de Biografía Corta con menos de 20 caracteres', () =
     await expect(page.getByRole('heading', { name: 'Completa tu Perfil' })).toBeVisible();
 
     // - Error message 'Mínimo 20 caracteres' shows in red below 'Biografía Corta' field
-    await expect(page.locator('text=Mínimo 20 caracteres')).toBeVisible();
+    await expect(page.getByText('Mínimo 20 caracteres')).toBeVisible();
   });
 });

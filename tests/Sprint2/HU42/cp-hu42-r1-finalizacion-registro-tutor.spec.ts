@@ -1,11 +1,11 @@
 import { test, expect } from '@playwright/test';
 import { BASE_URL } from '../../config';
 
-// spec: specs/Sprint2/CasosHU41.md
-// case: CP-HU-41-R3
+// spec: specs/Sprint2/CasosHU42.md
+// case: CP-HU-42-R1
 
-test.describe('HU41 - Define tu Horario (Paso 2)', () => {
-  test('CP-HU-41-R3: Verificar avance al Paso 3 Perfil Profesional con al menos un horario seleccionado', async ({ page }) => {
+test.describe('HU42 - Finalización Registro Tutor', () => {
+  test('CP-HU-42-R1: Completar registro del tutor con perfil profesional (Paso 3)', async ({ page }) => {
     // Step 1: Navigate to registro page
     await page.goto(BASE_URL + '/registro');
     
@@ -13,7 +13,6 @@ test.describe('HU41 - Define tu Horario (Paso 2)', () => {
     await page.click('label:has-text("Tutor")');
     
     // Step 3: Create account with unique email and phone
-    const timestamp = Date.now();
     const randomSuffix = Math.floor(Math.random() * 1000000);
     const email = `d.q${randomSuffix}@epn.edu.ec`;
     const password = '123456';
@@ -38,7 +37,7 @@ test.describe('HU41 - Define tu Horario (Paso 2)', () => {
     // Step 4: Wait for Paso 1 (Datos Básicos) form to load
     await page.waitForSelector('text=Completa tu Perfil', { timeout: 10000 });
     
-    // Step 5: Fill Paso 1 data manually - CLEAR FIELDS FIRST
+    // Step 5: Fill Paso 1 data manually
     const nameInput = page.locator('input[placeholder*="Ej. Daniela"]');
     await nameInput.clear();
     await page.waitForTimeout(300);
@@ -74,33 +73,57 @@ test.describe('HU41 - Define tu Horario (Paso 2)', () => {
     // Step 6: Click "Siguiente Disponibilidad" button
     const siguienteBtn = page.locator('button:has-text("Siguiente")').first();
     await siguienteBtn.waitFor({ state: 'visible' });
-    
-    // Scroll to button to ensure it's in view
     await siguienteBtn.scrollIntoViewIfNeeded();
     await page.waitForTimeout(500);
-    
-    // Click with force to ensure it registers
     await siguienteBtn.click({ force: true });
     await page.waitForTimeout(1000);
     
     // Wait for Paso 2 to load
     await page.waitForSelector('text=Define tu Horario', { timeout: 10000 });
     
-    // Step 7: Select some time blocks for Paso 2
-    // Find and click a time cell (Lunes 10:00)
-    const timeCell = page.locator('table').locator('text=Lun').locator('..').locator('button, td').filter({ hasText: '10:00' }).first();
-    if (await timeCell.isVisible()) {
-      await timeCell.click();
-    }
+    // Step 7: Select time block for Paso 2 - click on hourly slot (Lunes 10:00)
+    const horaRow = page.locator('tbody tr').filter({ hasText: '10:00' });
+    const lunesCell = horaRow.locator('td').nth(1); // Lunes is second column (after HORA)
+    await lunesCell.click();
     
-    // Step 8: Click "Siguiente" button to advance to Paso 3
-    const nextBtn = page.locator('button:has-text("Siguiente")').filter({ hasText: /Perfil|Disponibilidad/ }).first();
-    await nextBtn.waitFor({ state: 'visible' });
-    await nextBtn.click();
+    // Step 8: Verify at least one horario is selected
+    await page.waitForTimeout(500);
     
-    // Step 9: Verify we advanced to Paso 3 (Perfil Profesional)
+    // Step 9: Click "Siguiente Perfil Profesional" button to advance to Paso 3
+    const finalizarDisponibilidadBtn = page.locator('button:has-text("Siguiente")').last();
+    await finalizarDisponibilidadBtn.waitFor({ state: 'visible' });
+    await finalizarDisponibilidadBtn.scrollIntoViewIfNeeded();
+    await page.waitForTimeout(500);
+    await finalizarDisponibilidadBtn.click({ force: true });
+    await page.waitForTimeout(2000);
+    
+    // Step 10: Wait for Paso 3 (Perfil Profesional) to load
     await page.waitForSelector('text=Perfil Profesional', { timeout: 10000 });
+    
+    // Step 11: Add a materia (subject) - fill in the textbox
+    const materiaInput = page.locator('input[placeholder*="Escribe una materia"]');
+    await materiaInput.waitFor({ state: 'visible', timeout: 5000 });
+    await materiaInput.fill('Cálculo');
+    
+    // Step 12: Click "+ Agregar" button to add the materia
+    const agregarBtn = page.locator('button:has-text("Agregar")').first();
+    await agregarBtn.click();
+    await page.waitForTimeout(500);
+    
+    // Step 13: Click "Finalizar Registro" button
+    const finalizarBtn = page.locator('button:has-text("Finalizar Registro")');
+    await finalizarBtn.waitFor({ state: 'visible' });
+    await finalizarBtn.scrollIntoViewIfNeeded();
+    await page.waitForTimeout(500);
+    await finalizarBtn.click({ force: true });
+    await page.waitForTimeout(2000);
+    
+    // Step 14: Verify registration completed - wait for page to load
+    await page.waitForLoadState('networkidle', { timeout: 10000 });
+    
+    // Verify we're NOT at login/registro pages anymore
+    const url = page.url();
+    expect(!url.includes('/registro')).toBeTruthy();
+    expect(!url.includes('/iniciar-sesion')).toBeTruthy();
   });
 });
-
-

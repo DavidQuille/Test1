@@ -1,16 +1,17 @@
-import { loginAndGoto } from '../../auth';
+import { test, expect } from '@playwright/test';
+import { createTutorAccount } from '../../auth';
+
 // spec: specs/Sprint2/CasosHU34.md
 // case: CP-HU-34-R2
 
-import { test, expect } from '@playwright/test';
-import { TUTOR_REGISTRO_URL } from '../../config';
-
 test.describe('Validación de campos obligatorios vacíos al registrar Datos Básicos', () => {
   test('CP-HU-34-R2: Validación de campos obligatorios vacíos', async ({ page }) => {
-    // 1. Navigate to the tutor registration page
-    await loginAndGoto(page, TUTOR_REGISTRO_URL);
+    // Create a tutor account first
+    const timestamp = Date.now();
+    const uniqueEmail = `d.q.r2.${timestamp}@epn.edu.ec`;
+    await createTutorAccount(page, uniqueEmail, '123456');
 
-    // 7. Click 'Siguiente Disponibilidad' button without filling any fields
+    // Click 'Siguiente Disponibilidad' button without filling any fields
     await page.getByRole('button', { name: 'Siguiente Disponibilidad →' }).click();
 
     // Expected Results:
@@ -33,3 +34,4 @@ test.describe('Validación de campos obligatorios vacíos al registrar Datos Bá
     await expect(page.getByRole('paragraph').filter({ hasText: 'La biografía es obligatoria' })).toBeVisible();
   });
 });
+

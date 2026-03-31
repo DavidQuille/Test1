@@ -1,14 +1,15 @@
-import { loginAndGoto } from '../../auth';
+import { test, expect } from '@playwright/test';
+import { createTutorAccount } from '../../auth';
+
 // spec: specs/Sprint2/CasosHU34.md
 // case: CP-HU-34-R3
 
-import { test, expect } from '@playwright/test';
-import { TUTOR_REGISTRO_URL } from '../../config';
-
 test.describe('Validación de Nombre Completo con menos de 3 caracteres', () => {
   test('CP-HU-34-R3: Validación de Nombre Completo con menos de 3 caracteres', async ({ page }) => {
-    // 1. Navigate to tutor registration page
-    await loginAndGoto(page, TUTOR_REGISTRO_URL);
+    // Create a tutor account first
+    const timestamp = Date.now();
+    const uniqueEmail = `d.q.r3.${timestamp}@epn.edu.ec`;
+    await createTutorAccount(page, uniqueEmail, '123456');
 
     // 2. Enter 'Jo' in Nombre Completo field
     await page.getByRole('textbox', { name: 'Nombre Completo' }).fill('Jo');
@@ -33,6 +34,6 @@ test.describe('Validación de Nombre Completo con menos de 3 caracteres', () => 
     await expect(page.getByRole('heading', { name: 'Completa tu Perfil' })).toBeVisible();
 
     // - Error message 'Mínimo 3 caracteres' shows in red below 'Nombre Completo'
-    await expect(page.locator('text=Mínimo 3 caracteres')).toBeVisible();
+    await expect(page.getByText('Mínimo 3 caracteres')).toBeVisible();
   });
 });

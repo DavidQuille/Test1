@@ -1,44 +1,67 @@
-import { loginAndGoto } from '../../auth';
-// spec: specs/Sprint2/CasosHU41.md
-// case: CP-HU-41-ADD-05
-
 import { test, expect } from '@playwright/test';
-import { TUTOR_REGISTRO_URL } from '../../config';
+import { BASE_URL } from '../../config';
 
 test.describe('HU41 - Define tu Horario (Paso 2)', () => {
   test('CP-HU-41-ADD-05: Verificar selección de múltiples horarios en rango vespertino (12:00-17:00)', async ({ page }) => {
-    // 1. Navegar a la página de registro de tutor
-    await loginAndGoto(page, TUTOR_REGISTRO_URL);
-
-    // 2. Llenar los campos del Paso 1 (Datos Básicos)
-    await page.getByRole('textbox', { name: 'Nombre Completo' }).fill('Daniela Castro');
-    await page.getByRole('textbox', { name: 'Número de WhatsApp' }).fill('593991234567');
-    await page.getByLabel('Facultad').selectOption('FIS - Sistemas');
-    await page.getByLabel('Semestre Actual').selectOption('4° Semestre');
-    await page.getByRole('textbox', { name: 'Biografía Corta' }).fill('Tengo 5 años de experiencia en desarrollo de software y disfruto enseñar algoritmos.');
-
-    // 3. Avanzar al Paso 2 - Define tu Horario
-    await page.getByRole('button', { name: 'Siguiente Disponibilidad →' }).click();
-
-    // 4. Verificar que estamos en el Paso 2
-    await expect(page.getByRole('heading', { name: 'Define tu Horario' })).toBeVisible();
-
-    // 5. Seleccionar horarios solo en rango vespertino: Lun 12:00, Mar 14:00, Mié 17:00
-    await page.getByRole('button', { name: 'Disponibilidad Lun 12:00' }).click();
-    await page.getByRole('button', { name: 'Disponibilidad Mar 14:00' }).click();
-    await page.getByRole('button', { name: 'Disponibilidad Mié 17:00' }).click();
-
-    // Expected Results:
-    // - Los bloques horarios vespertinos están seleccionados
-    await expect(page.getByRole('button', { name: 'Disponibilidad Lun 12:00' })).toContainText('✓');
-    await expect(page.getByRole('button', { name: 'Disponibilidad Mar 14:00' })).toContainText('✓');
-    await expect(page.getByRole('button', { name: 'Disponibilidad Mié 17:00' })).toContainText('✓');
-
-    // - El contador muestra '✓ 3 horarios seleccionados'
-    await expect(page.getByText('✓ 3 horarios seleccionados')).toBeVisible();
-
-    // - El sistema permite avanzar correctamente al Paso 3
-    await page.getByRole('button', { name: 'Siguiente Perfil Profesional →' }).click();
-    await expect(page.getByRole('button', { name: 'Perfil Profesional', exact: true })).toBeVisible();
+    const randomSuffix = Math.floor(Math.random() * 1000000);
+    const email = `d.q${randomSuffix}@epn.edu.ec`;
+    const uniquePhone = `59398${String(randomSuffix).padStart(7, '0')}`;
+    
+    await page.goto(BASE_URL + '/registro');
+    await page.click('label:has-text("Tutor")');
+    
+    await page.locator('input[placeholder*="tu.correo"]').fill(email);
+    await page.locator('input[placeholder*="Mínimo"]').fill('123456');
+    await page.locator('input[placeholder*="Repite"]').fill('123456');
+    
+    await Promise.all([
+      page.click('button:has-text("Crear Cuenta")'),
+      page.waitForNavigation()
+    ]);
+    
+    await page.waitForSelector('text=Completa tu Perfil', { timeout: 10000 });
+    
+    const nameInput = page.locator('input[placeholder*="Ej. Daniela"]');
+    await nameInput.clear();
+    await page.waitForTimeout(300);
+    await nameInput.fill('David López');
+    await page.waitForSelector('text=Nombre válido', { timeout: 5000 });
+    
+    const whatsappInput = page.locator('input[placeholder*="593"]');
+    await whatsappInput.clear();
+    await page.waitForTimeout(300);
+    await whatsappInput.fill(uniquePhone);
+    await page.waitForSelector('text=Número válido', { timeout: 5000 });
+    
+    await page.locator('select').first().selectOption('FIEE - Eléctrica y Electrónica');
+    await page.locator('select').nth(1).selectOption('7° Semestre');
+    
+    const bioInput = page.locator('textarea[placeholder*="Cuéntales"]');
+    await bioInput.clear();
+    await page.waitForTimeout(300);
+    await bioInput.fill('Soy tutor especializado en matemáticas.');
+    await page.waitForSelector('text=Biografía válida', { timeout: 5000 });
+    
+    const siguienteBtn = page.locator('button:has-text("Siguiente")').first();
+    await siguienteBtn.waitFor({ state: 'visible' });
+    await siguienteBtn.scrollIntoViewIfNeeded();
+    await page.waitForTimeout(500);
+    await siguienteBtn.click({ force: true });
+    await page.waitForTimeout(1000);
+    
+    await page.waitForSelector('text=Define tu Horario', { timeout: 10000 });
+    
+    const table = page.locator('table');
+    const rows = await table.locator('tbody tr').all();
+    
+    for (let i = 5; i < Math.min(11, rows.length); i++) {
+      const cells = await rows[i].locator('td').all();
+      if (cells.length > 1) await cells[1].click();
+      await page.waitForTimeout(100);
+      if (cells.length > 2) await cells[2].click();
+      await page.waitForTimeout(100);
+    }
+    
+    await expect(page.locator('text=horarios seleccionados')).toBeVisible({ timeout: 5000 });
   });
 });

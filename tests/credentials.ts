@@ -16,6 +16,12 @@ export const CREDENTIALS = {
     name: 'María García',
     role: 'Tutor',
   },
+  TUTOR_REGISTRO: {
+    email: 'd.q1@epn.edu.ec',
+    password: '123456',
+    name: 'Tutor Registro',
+    role: 'Tutor',
+  },
   STUDENT: {
     email: 'patricio.c@epn.edu.ec',
     password: '123456',
@@ -26,6 +32,7 @@ export const CREDENTIALS = {
 
 // Alias por rol
 export const TUTOR = CREDENTIALS.TUTOR_1;
+export const TUTOR_REG = CREDENTIALS.TUTOR_REGISTRO;
 export const STUDENT = CREDENTIALS.STUDENT;
 
 export const getCredentialsByUrl = (url: string) => {
@@ -33,6 +40,10 @@ export const getCredentialsByUrl = (url: string) => {
 
   if (normalizedUrl.includes('encuentra')) {
     return STUDENT;
+  }
+
+  if (normalizedUrl.includes('/tutor/registro')) {
+    return TUTOR_REG;
   }
 
   if (
@@ -44,4 +55,13 @@ export const getCredentialsByUrl = (url: string) => {
   }
 
   return STUDENT;
+};
+
+export const getNextTutorRegisterEmail = (index: number = 1) => {
+  return {
+    email: `d.q${index}@epn.edu.ec`,
+    password: '123456',
+    name: `Tutor Registro ${index}`,
+    role: 'Tutor',
+  };
 };
