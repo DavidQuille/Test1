@@ -14,7 +14,7 @@ test.describe('HU01 - Publicación de Ofertas de Tutoría', () => {
     await page.getByRole('button', { name: '+ Nueva Oferta' }).click();
 
     // 3. Enter the title "Álgebra Lineal"
-    await page.getByRole('textbox', { name: 'Ej. Cálculo Vectorial, Física' }).fill('Álgebra Lineal');
+    await page.getByRole('textbox', { name: /Ej. Cálculo Vectorial/ }).fill('Álgebra Lineal');
 
     // 4. Set the price to 12
     const priceInput = await page.locator('input[type="number"]');
@@ -35,7 +35,7 @@ test.describe('HU01 - Publicación de Ofertas de Tutoría', () => {
     await page.getByRole('button', { name: 'Publicar Oferta' }).click();
 
     // Verify the description field shows error
-    const descriptionField = page.getByRole('textbox', { name: 'Describe qué incluye tu tutor' });
+    const descriptionField = page.getByRole('textbox', { name: /Describe qué incluye tu tutoría/ });
     await expect(descriptionField).toHaveClass(/border-\[var\(--error\)\]/);
     
     // Verify the error message is displayed

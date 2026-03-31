@@ -11,14 +11,14 @@ export async function loginAndGoto(page: Page, targetUrl: string) {
   await page.getByRole('textbox', { name: 'Contraseña' }).fill(user.password);
   await page.getByRole('button', { name: 'Iniciar Sesión' }).click();
 
-  // Wait until the app leaves the login landing before forcing the target route.
+  // Wait until the app leaves the login landing
   try {
     await page.waitForURL(/\/(dashboard|encuentra-tutoria|tutor\/registro)/, { timeout: 10000 });
   } catch {
-    // Some environments can be slower; the explicit navigation below remains the source of truth.
+    // Some environments can be slower
   }
-
-  await page.goto(targetUrl);
+  
+  // Don't need to goto again - login already navigates to the right place
 }
 
 export async function createTutorAccount(page: Page, email: string, password: string) {

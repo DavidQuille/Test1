@@ -14,7 +14,7 @@ test.describe('HU01 - Publicación de Ofertas de Tutoría', () => {
     await page.getByRole('button', { name: '+ Nueva Oferta' }).click();
 
     // 3. Enter the title "Programación en Python"
-    await page.getByRole('textbox', { name: 'Ej. Cálculo Vectorial, Física' }).fill('Programación en Python');
+    await page.getByRole('textbox', { name: /Ej. Cálculo Vectorial/ }).fill('Programación en Python');
 
     // 4. Set the price to 15
     const priceInput = await page.locator('input[type="number"]');
@@ -25,7 +25,7 @@ test.describe('HU01 - Publicación de Ofertas de Tutoría', () => {
     // 6. Categories field is left empty - no action needed
 
     // 7. Enter the description
-    await page.getByRole('textbox', { name: 'Describe qué incluye tu tutor' }).fill('Clases de Python desde cero hasta nivel intermedio.');
+    await page.getByRole('textbox', { name: /Describe qué incluye tu tutoría/ }).fill('Clases de Python desde cero hasta nivel intermedio.');
 
     // 8. Close the categories dropdown by clicking on the title field
     await page.getByRole('textbox', { name: /Ej. C\u00e1lculo Vectorial/ }).click();

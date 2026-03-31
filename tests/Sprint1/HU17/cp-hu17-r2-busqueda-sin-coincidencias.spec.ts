@@ -25,10 +25,22 @@ test.describe('HU17 - Búsqueda de Tutorías', () => {
 
     // Fallback for updated search behavior (fuzzy/semantic matching):
     // ensure visible results do not contain the exact query term.
-    const cards = page.locator('main h3');
-    const cardCount = await cards.count();
-    for (let index = 0; index < cardCount; index += 1) {
-      await expect(cards.nth(index)).not.toContainText('Astronomía');
+    // Filter out h3 elements that are section titles (Modalidad, Disponibilidad, etc.)
+    const filterTitles = ['Modalidad', 'Disponibilidad', 'Precio', 'Área de Conocimiento'];
+    
+    // Check all h3 elements using page evaluation (faster than loop with expects)
+    const h3Texts = await page.evaluate(() => {
+      const h3Elements = document.querySelectorAll('main h3');
+      return Array.from(h3Elements).map(el => el.textContent);
+    });
+    
+    // Verify that offer titles don't contain 'Astronom\u00eda'
+    for (const text of h3Texts) {
+      const trimmedText = text?.trim() || '';
+      // Only check offer titles, not section titles
+      if (!filterTitles.includes(trimmedText)) {
+        expect(trimmedText).not.toContain('Astronom\u00eda');
+      }
     }
   });
 });

@@ -39,7 +39,7 @@ test.describe('Dashboard de Tutor - Casos HU02', () => {
     await expect(closeButton).toBeVisible();
 
     // Verificar que el formulario tiene los campos esperados
-    const priceInput = page.getByRole('spinbutton');
+    const priceInput = page.locator('input[type="number"]');
     await expect(priceInput).toBeVisible();
 
     const modalityCombobox = page.getByRole('combobox');

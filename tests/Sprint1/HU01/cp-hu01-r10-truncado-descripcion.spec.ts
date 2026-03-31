@@ -14,14 +14,14 @@ test.describe('HU01 - Publicación de Ofertas de Tutoría', () => {
     await page.getByRole('button', { name: '+ Nueva Oferta' }).click();
 
     // 3. Type a long description (263 characters) to test 250 character limit
-    await page.getByRole('textbox', { name: 'Describe qué incluye tu tutor' }).fill('En este curso intensivo aprenderás a dominar las integrales dobles y triples, así como el análisis vectorial completo. Incluye resolución de exámenes pasados, talleres prácticos semanales y acceso a grabaciones de las clases para repaso constante previo al examen.');
+    await page.getByRole('textbox', { name: /Describe qué incluye tu tutoría/ }).fill('En este curso intensivo aprenderás a dominar las integrales dobles y triples, así como el análisis vectorial completo. Incluye resolución de exámenes pasados, talleres prácticos semanales y acceso a grabaciones de las clases para repaso constante previo al examen.');
 
     // 4. Verify the text is truncated to 250 characters
-    const descriptionField = page.getByRole('textbox', { name: 'Describe qué incluye tu tutor' });
+    const descriptionField = page.getByRole('textbox', { name: /Describe qué incluye tu tutoría/ });
     const value = await descriptionField.inputValue();
     expect(value.length).toBeLessThanOrEqual(250);
 
     // Verify the counter shows "250/250"
-    await expect(page.getByText('250/250')).toBeVisible();
+    await expect(page.locator('span').filter({ hasText: /^250\/250$/ })).toBeVisible();
   });
 });

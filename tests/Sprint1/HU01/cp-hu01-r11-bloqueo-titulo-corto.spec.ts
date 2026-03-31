@@ -14,7 +14,7 @@ test.describe('HU01 - Publicación de Ofertas de Tutoría', () => {
     await page.getByRole('button', { name: '+ Nueva Oferta' }).click();
 
     // 3. Enter a very short title "Fe" (2 characters)
-    await page.getByRole('textbox', { name: 'Ej. Cálculo Vectorial, Física' }).fill('Fe');
+    await page.getByRole('textbox', { name: /Ej. Cálculo Vectorial/ }).fill('Fe');
 
     // 4. Set price to 10
     const priceInput = await page.locator('input[type="number"]');
@@ -27,7 +27,7 @@ test.describe('HU01 - Publicación de Ofertas de Tutoría', () => {
     await page.getByRole('button', { name: 'Matemática' }).click();
 
     // 7. Enter a valid description
-    await page.getByRole('textbox', { name: 'Describe qué incluye tu tutor' }).fill('Clases de Matemática para estudiantes universitarios con énfasis en ejercicios prácticos.');
+    await page.getByRole('textbox', { name: /Describe qué incluye tu tutoría/ }).fill('Clases de Matemática para estudiantes universitarios con énfasis en ejercicios prácticos.');
 
     // 8. Close the categories dropdown by clicking on the title field
     await page.getByRole('textbox', { name: /Ej. C\u00e1lculo Vectorial/ }).click();
@@ -39,7 +39,7 @@ test.describe('HU01 - Publicación de Ofertas de Tutoría', () => {
     await expect(page.getByText('Mínimo 3 caracteres')).toBeVisible();
 
     // Verify the title counter shows "2/80"
-    await expect(page.getByText('2/80')).toBeVisible();
+    await expect(page.locator('span').filter({ hasText: /^2\/80$/ })).toBeVisible();
 
     // Verify the modal remains open
     await expect(page.getByRole('heading', { name: 'Nueva Oferta de Tutoría' })).toBeVisible();

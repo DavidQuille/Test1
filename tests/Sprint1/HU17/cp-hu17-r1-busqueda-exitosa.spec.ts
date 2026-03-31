@@ -20,7 +20,7 @@ test.describe('HU17 - Búsqueda de Tutorías', () => {
     await expect(resultCounter).toContainText(/\d+\s+resultados/);
 
     // Verify heading with 'Cálculo' exists - indicating results are shown
-    const calculoHeading = page.locator('h3', { hasText: /Cálculo/ });
+    const calculoHeading = page.locator('h3', { hasText: /Cálculo/ }).first();
     await expect(calculoHeading).toBeVisible();
 
     // Verify at least one tutoring card is displayed

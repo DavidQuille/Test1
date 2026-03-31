@@ -14,7 +14,7 @@ test.describe('HU01 - Publicación de Ofertas de Tutoría', () => {
     await page.getByRole('button', { name: '+ Nueva Oferta' }).click();
 
     // 3. Enter the title "Prueba de Cierre con X"
-    await page.getByRole('textbox', { name: 'Ej. Cálculo Vectorial, Física' }).fill('Prueba de Cierre con X');
+    await page.getByRole('textbox', { name: /Ej. Cálculo Vectorial/ }).fill('Prueba de Cierre con X');
 
     // 4. Click the X button to close the modal
     await page.getByRole('button', { name: 'Cerrar modal' }).click();

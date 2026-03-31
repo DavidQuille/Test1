@@ -14,7 +14,7 @@ test.describe('HU01 - Publicación de Ofertas de Tutoría', () => {
     await page.getByRole('button', { name: '+ Nueva Oferta' }).click();
 
     // 3. Enter the title "Física I"
-    await page.getByRole('textbox', { name: 'Ej. Cálculo Vectorial, Física' }).fill('Física I');
+    await page.getByRole('textbox', { name: /Ej. Cálculo Vectorial/ }).fill('Física I');
 
     // 4. Set the price to 3 which is outside the valid range ($5-$20)
     const priceInput = await page.locator('input[type="number"]');
@@ -27,7 +27,7 @@ test.describe('HU01 - Publicación de Ofertas de Tutoría', () => {
     await page.getByRole('button', { name: 'Física' }).click();
 
     // 7. Enter the description
-    await page.getByRole('textbox', { name: 'Describe qué incluye tu tutor' }).fill('Tutorías personalizadas de Física I para estudiantes universitarios.');
+    await page.getByRole('textbox', { name: /Describe qué incluye tu tutoría/ }).fill('Tutorías personalizadas de Física I para estudiantes universitarios.');
 
     // 8. Close the categories dropdown by clicking on the title field
     await page.getByRole('textbox', { name: /Ej. C\u00e1lculo Vectorial/ }).click();
