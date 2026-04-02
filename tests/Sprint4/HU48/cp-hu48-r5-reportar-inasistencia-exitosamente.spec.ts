@@ -12,7 +12,7 @@ test.describe('HU48 - Historial tutorias inasistencia', () => {
     // but after multiple test runs, all cards in pages 1-4 now have inasistencia status.
     
     // 1-2. Iniciar sesión y navegar a Historial de Tutorías Impartidas.
-    await loginAsTutorAndOpenHistory(page);
+    await loginAsTutorAndOpenHistory(page, 3);
 
     // 3. Identificar tutoría sin confirmar y abrir modal Confirmar Inasistencia.
     const tarjetaObjetivo = await getEditableCard(page, 1);

@@ -7,7 +7,7 @@ import { getEditableCard, loginAsTutorAndOpenHistory } from './helpers';
 test.describe('HU48 - Historial tutorias inasistencia', () => {
   test('CP-HU-48-R3 Reportar Inasistencia desde Modal de Detalle', async ({ page }) => {
     // 1-2. Iniciar sesión y navegar a Historial de Tutorías Impartidas.
-    await loginAsTutorAndOpenHistory(page);
+    await loginAsTutorAndOpenHistory(page, 3);
 
     // 3. Identificar tarjeta sin confirmar y abrir modal Detalle de la Tutoría.
     const tarjetaSinConfirmar = await getEditableCard(page, 0);
@@ -26,5 +26,8 @@ test.describe('HU48 - Historial tutorias inasistencia', () => {
     // Verificación: Se visualizan botones Cancelar y Sí, reportar inasistencia.
     await expect(page.getByRole('button', { name: 'Cancelar' })).toBeVisible();
     await expect(page.getByRole('button', { name: 'Sí, reportar inasistencia' })).toBeVisible();
+
+    // 5. Hacer clic en botón Sí, reportar inasistencia.
+    await page.getByRole('button', { name: 'Sí, reportar inasistencia' }).click();
   });
 });

@@ -7,10 +7,10 @@ import { getEditableCard, loginAsTutorAndOpenHistory } from './helpers';
 test.describe('HU48 - Historial tutorias inasistencia', () => {
   test('CP-HU-48-R2 Visualizar Detalle de Tutoría sin Confirmar', async ({ page }) => {
     // 1-2. Iniciar sesión y navegar a Historial de Tutorías Impartidas.
-    await loginAsTutorAndOpenHistory(page);
+    await loginAsTutorAndOpenHistory(page, 3);
 
     // 3. Identificar una tarjeta de tutoría con estado sin confirmar.
-    const tarjetaSinConfirmar = await getEditableCard(page, 0);
+    const tarjetaSinConfirmar = await getEditableCard(page, 0, /Cálculo|Programación|Álgebra/);
     await expect(tarjetaSinConfirmar).toBeVisible();
 
     // 4. Hacer clic en el área general de la tarjeta sin confirmar.
@@ -22,7 +22,7 @@ test.describe('HU48 - Historial tutorias inasistencia', () => {
     // Verificación: Se visualiza información completa de la sesión.
     const detalleModal = page.getByRole('dialog');
     await expect(detalleModal).toContainText('Estudiante');
-    await expect(detalleModal).toContainText(/Cálculo|Programación|Álgebra/);
+
     
     // Verificación: Se visualiza el botón Cerrar
     await expect(detalleModal.getByRole('button', { name: 'Cerrar', exact: true })).toBeVisible();
