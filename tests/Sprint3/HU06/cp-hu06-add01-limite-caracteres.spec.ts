@@ -3,12 +3,13 @@ import { loginAndGoto } from '../../auth';
 // seed: tests/seed.spec.ts
 
 import { test, expect } from '@playwright/test';
+import { openRequestModal } from './helpers';
 
 test.describe('Verificación de bloqueo por límite máximo de caracteres', () => {
   test('CP-HU-06-ADD01: Verificación de bloqueo por límite máximo de caracteres en mensaje de solicitud', async ({ page }) => {
     // 1. Iniciar sesión como Estudiante
     // 2. Navegar a una tutoría
-    await loginAndGoto(page, 'https://politutorias-frontend.vercel.app/encuentra-tutoria');
+    await loginAndGoto(page, 'http://localhost:3001/encuentra-tutoria');
     
     const searchInput = page.locator('input[placeholder*="Buscar"]').first();
     await searchInput.fill('Álgebra');
@@ -18,13 +19,9 @@ test.describe('Verificación de bloqueo por límite máximo de caracteres', () =
     
     await page.waitForURL('**/ofertas/**');
     
-    // 3. Seleccionar un horario
-    const horaButton = page.getByRole('button', { name: '10:' }).first();
-    await horaButton.click();
-    
-    // 4. Abrir el modal
-    const solicitarButton = page.getByRole('button', { name: 'Solicitar Tutoría (1)' });
-    await solicitarButton.click();
+    // 3-4. Seleccionar horario disponible y abrir modal
+    const requestModalOpened = await openRequestModal(page);
+    test.skip(!requestModalOpened, 'No hay horarios solicitables disponibles actualmente para esta oferta con esta cuenta.');
     
     // 5. Ingresar 501 caracteres (A repetido)
     const messageBox = page.getByRole('textbox', { name: 'Mensaje para el tutor' });

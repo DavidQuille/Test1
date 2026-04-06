@@ -1,5 +1,5 @@
 
-url: https://politutorias-frontend.vercel.app/tutor/agenda
+url: http://localhost:3001/tutor/agenda
 
 ## ID: CP-HU-15-R1
 **Título:** Verificar navegación a la vista principal "Mi Agenda"

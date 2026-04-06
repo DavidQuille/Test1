@@ -1,4 +1,5 @@
 import { loginAndGoto } from '../../auth';
+import { openRequestModal } from './helpers';
 // spec: specs/Sprint3/CasosHU06.md
 // seed: tests/seed.spec.ts
 
@@ -8,7 +9,7 @@ test.describe('Verificación de mensaje obligatorio en solicitud de tutoría', (
   test('CP-HU-06-R4: Verificación de mensaje obligatorio en solicitud de tutoría (una modalidad)', async ({ page }) => {
     // 1. Iniciar sesión como Estudiante (ya viene logueado desde el seed)
     // 2. Navegar a la pantalla de "Detalle de Oferta" de una tutoría
-    await loginAndGoto(page, 'https://politutorias-frontend.vercel.app/encuentra-tutoria');
+    await loginAndGoto(page, 'http://localhost:3001/encuentra-tutoria');
     
     // Buscar una tutoría
     const searchInput = page.locator('input[placeholder*="Buscar"]').first();
@@ -21,13 +22,9 @@ test.describe('Verificación de mensaje obligatorio en solicitud de tutoría', (
     // Esperar a que cargue
     await page.waitForURL('**/ofertas/**');
     
-    // 3. Seleccionar un horario
-    const horaButton = page.getByRole('button', { name: '10:' }).first();
-    await horaButton.click();
-    
-    // 4. Hacer clic en el botón "Solicitar Tutoría"
-    const solicitarButton = page.getByRole('button', { name: 'Solicitar Tutoría (1)' });
-    await solicitarButton.click();
+    // 3-4. Seleccionar un horario que habilite la solicitud y abrir modal
+    const requestModalOpened = await openRequestModal(page);
+    test.skip(!requestModalOpened, 'No hay horarios solicitables disponibles actualmente para esta oferta con esta cuenta.');
     
     // 5. En el modal, si hay modalidad, seleccionar una (si aplica)
     const virtualButton = page.getByRole('button', { name: 'Virtual' });

@@ -8,6 +8,7 @@
 export const BASE_URL = process.env.E2E_BASE_URL ?? 'http://localhost:3001';
 
 export const DASHBOARD_TUTOR_URL = `${BASE_URL}/dashboard/tutor`;
+export const TUTOR_AGENDA_URL = `${BASE_URL}/tutor/agenda`;
 export const BANDEJA_ENTRADA_URL = `${BASE_URL}/bandeja`;
 export const ENCUENTRA_TUTORIA_URL = `${BASE_URL}/encuentra-tutoria`;
 export const TUTOR_REGISTRO_URL = `${BASE_URL}/tutor/registro`;
@@ -16,5 +17,6 @@ export const OFERTA_HU09_SECUNDARIA_URL = `${BASE_URL}/ofertas/3ec326b2-188f-45e
 export const MIS_SOLICITUDES_URL = `${BASE_URL}/dashboard/solicitudes`;
 export const TUTOR_HISTORIAL_URL = `${BASE_URL}/tutor/historial`;
 export const ESTUDIANTE_HISTORIAL_URL = `${BASE_URL}/historial`;
+export const ESTUDIANTE_AGENDA_URL = `${BASE_URL}/agenda`;
 export const LOGIN_URL = `${BASE_URL}/`;
 export const REGISTRO_URL = `${BASE_URL}/registro`;
