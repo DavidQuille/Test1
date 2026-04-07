@@ -1,7 +1,7 @@
 # Reporte de Scripts de Prueba Automatizados (S1)
 > Generado el: 2026-03-13
 
-url: https://politutorias-frontend.vercel.app/bandeja
+url: http://localhost:3001/bandeja
 
 ## ID: CP-HU-09-R1
 **Título:** Visualización Inicial de Solicitudes Pendientes con Datos

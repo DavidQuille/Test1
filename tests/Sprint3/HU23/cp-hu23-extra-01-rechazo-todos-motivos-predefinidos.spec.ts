@@ -11,15 +11,20 @@ import {
   loginAndOpenInbox,
   openFirstPendingRequest,
   openRejectModal,
+  withHu23ExclusiveAccess,
 } from './helpers';
+
+test.describe.configure({ mode: 'serial' });
 
 test.describe('HU23 - Exploratorio de motivos predefinidos', () => {
   test('Extra-01: Rechazar usando todos los motivos predefinidos disponibles', async ({ page }) => {
+    await withHu23ExclusiveAccess(async () => {
     // 1-2. Iniciar sesión y navegar a Bandeja de Entrada.
     await loginAndOpenInbox(page);
 
     // 3-4. Abrir solicitud pendiente y modal de rechazo.
-    await openFirstPendingRequest(page);
+    const opened = await openFirstPendingRequest(page);
+    test.skip(!opened, 'No hay solicitudes pendientes visibles en el entorno.');
     await openRejectModal(page);
 
     const predefinidos = [
@@ -43,9 +48,11 @@ test.describe('HU23 - Exploratorio de motivos predefinidos', () => {
 
       // Reabrir otra solicitud para continuar con el siguiente motivo.
       if (reason !== predefinidos[predefinidos.length - 1]) {
-        await openFirstPendingRequest(page);
+        const reopened = await openFirstPendingRequest(page);
+        test.skip(!reopened, 'No hay más solicitudes pendientes para continuar con el siguiente motivo.');
         await openRejectModal(page);
       }
     }
+    });
   });
 });

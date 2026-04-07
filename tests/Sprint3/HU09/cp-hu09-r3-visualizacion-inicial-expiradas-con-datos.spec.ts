@@ -7,13 +7,15 @@ import { test, expect } from '@playwright/test';
 import { expiredSummaryRows, openExpiredTab } from './helpers';
 
 test.describe('Bandeja de Entrada - Casos HU09', () => {
-  test.fixme('CP-HU-09-R3: Visualización Inicial de Solicitudes Expiradas con Datos', async ({ page }) => {
-    // Este caso requiere al menos una solicitud expirada visible en el entorno.
-    await openExpiredTab(page);
+  test('CP-HU-09-R3: Visualización Inicial de Solicitudes Expiradas con Datos', async ({ page }) => {
+    const expiredOpened = await openExpiredTab(page);
+    test.skip(!expiredOpened, 'No se pudo abrir la pestaña Expiradas en la Bandeja.');
 
-    const expiredTab = page.getByRole('button', { name: /Expiradas\(\d+\)/ });
-    const pendingTab = page.getByRole('button', { name: /Pendientes\(\d+\)/ });
-    const respondedTab = page.getByRole('button', { name: /Respondidas\(\d+\)/ });
+    test.skip((await expiredSummaryRows(page).count()) === 0, 'No hay solicitudes expiradas en el entorno actualmente.');
+
+    const expiredTab = page.locator('button, [role="tab"]').filter({ hasText: /Expiradas\s*\(\d+\)/i }).first();
+    const pendingTab = page.locator('button, [role="tab"]').filter({ hasText: /Pendientes\s*\(\d+\)/i }).first();
+    const respondedTab = page.locator('button, [role="tab"]').filter({ hasText: /Respondidas\s*\(\d+\)/i }).first();
 
     await expect(expiredTab).toHaveClass(/bg-primary/);
     await expect(pendingTab).toHaveClass(/bg-white/);

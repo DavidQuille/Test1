@@ -8,15 +8,20 @@ import {
   loginAndOpenInbox,
   openFirstPendingRequest,
   openRejectModal,
+  withHu23ExclusiveAccess,
 } from './helpers';
+
+test.describe.configure({ mode: 'serial' });
 
 test.describe('HU23 - Rechazo de solicitudes de tutoría', () => {
   test('CP-HU-23-R7: Bloqueo de ingreso al exceder límite de comentario', async ({ page }) => {
+    await withHu23ExclusiveAccess(async () => {
     // 1-2. Iniciar sesión y navegar a Bandeja de Entrada.
     await loginAndOpenInbox(page);
 
     // 3-4. Abrir solicitud pendiente y modal de rechazo.
-    await openFirstPendingRequest(page);
+    const opened = await openFirstPendingRequest(page);
+    test.skip(!opened, 'No hay solicitudes pendientes visibles en el entorno.');
     await openRejectModal(page);
 
     // 5-6. Seleccionar "Otro" e intentar ingresar 301 caracteres.
@@ -29,5 +34,6 @@ test.describe('HU23 - Rechazo de solicitudes de tutoría', () => {
 
     // Expected Results.
     await expect(page.getByText('300/300')).toBeVisible();
+    });
   });
 });

@@ -3,12 +3,14 @@ import { loginAndGoto } from '../../auth';
 // seed: tests/seed.spec.ts
 
 import { test, expect } from '@playwright/test';
-import { MIS_SOLICITUDES_URL } from '../../config';
+import { BASE_URL, MIS_SOLICITUDES_URL } from '../../config';
 
 test.describe('Mis Solicitudes - Filtros', () => {
   test('CP-HU-33-R1: Verificar visualización del filtro Todas', async ({ page }) => {
     // Navegar a la pantalla de Mis Solicitudes
     await loginAndGoto(page, MIS_SOLICITUDES_URL);
+    await page.goto(`${BASE_URL}/dashboard/solicitudes`);
+    await page.waitForURL('**/dashboard/solicitudes');
 
     // Esperar a que carguen las solicitudes
     await new Promise(f => setTimeout(f, 3 * 1000));
@@ -44,8 +46,7 @@ test.describe('Mis Solicitudes - Filtros', () => {
     await expect(fecha).toBeVisible();
 
     // Verificar modalidad (PRESENCIAL, VIRTUAL, AMBOS)
-    const modalidad = primeraTarjeta.locator('text=/PRESENCIAL|VIRTUAL|AMBOS/');
-    await expect(modalidad).toBeVisible();
+    await expect(primeraTarjeta).toContainText(/PRESENCIAL|VIRTUAL|AMBOS/i);
 
     // Verificar precio (formato $X/h)
     const precio = primeraTarjeta.locator('text=/\\$\\d+/');

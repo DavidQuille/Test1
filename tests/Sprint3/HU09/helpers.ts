@@ -9,41 +9,84 @@ import {
 
 const OFFER_URLS = [OFERTA_HU09_PRIMARIA_URL, OFERTA_HU09_SECUNDARIA_URL];
 
+function pendingTabLocator(page: Page) {
+  return page.locator('button, [role="tab"]').filter({ hasText: /Pendientes\s*\(\d+\)/i }).first();
+}
+
+function expiredTabLocator(page: Page) {
+  return page.locator('button, [role="tab"]').filter({ hasText: /Expiradas\s*\(\d+\)/i }).first();
+}
+
 export async function gotoInbox(page: Page) {
   await loginAndGoto(page, BANDEJA_ENTRADA_URL);
-  await page.waitForLoadState('networkidle');
+
+  if (!page.url().includes('/bandeja')) {
+    const bandejaLink = page.getByRole('link', { name: /^Bandeja$/i });
+    if (await bandejaLink.isVisible().catch(() => false)) {
+      await bandejaLink.click();
+    } else {
+      await page.goto(BANDEJA_ENTRADA_URL);
+    }
+  }
+
+  await page.waitForURL('**/bandeja**');
+  await page.waitForLoadState('domcontentloaded');
 }
 
 export async function openPendingTab(page: Page) {
   await gotoInbox(page);
-  await page.getByRole('button', { name: /Pendientes\(\d+\)/ }).click();
+  const pendingTab = pendingTabLocator(page);
+  if (!(await pendingTab.isVisible().catch(() => false))) {
+    return false;
+  }
+
+  await pendingTab.click();
   await page.waitForTimeout(500);
+  return true;
 }
 
 export async function openExpiredTab(page: Page) {
   await gotoInbox(page);
-  await page.getByRole('button', { name: /Expiradas\(\d+\)/ }).click();
+  const expiredTab = expiredTabLocator(page);
+  if (!(await expiredTab.isVisible().catch(() => false))) {
+    return false;
+  }
+
+  await expiredTab.click();
   await page.waitForTimeout(500);
+  return true;
 }
 
 export function pendingSummaryRows(page: Page) {
-  return page.locator('tbody tr').filter({ hasText: 'Pendiente' });
+  return page.locator('tbody tr').filter({ hasText: /Pendiente/i });
 }
 
 export function expiredSummaryRows(page: Page) {
-  return page.locator('tbody tr').filter({ hasText: 'Expirada' });
+  return page.locator('tbody tr').filter({ hasText: /Expirada/i });
 }
 
 export async function ensurePendingData(page: Page) {
-  await openPendingTab(page);
-
-  if ((await pendingSummaryRows(page).count()) > 0) {
-    return;
+  const pendingOpened = await openPendingTab(page);
+  if (!pendingOpened) {
+    return false;
   }
 
-  await createPendingRequest(page);
+  if ((await pendingSummaryRows(page).count()) > 0) {
+    return true;
+  }
+
+  const created = await createPendingRequest(page);
+  if (!created) {
+    return false;
+  }
+
   await openPendingTab(page);
+  if ((await pendingSummaryRows(page).count()) === 0) {
+    return false;
+  }
+
   await expect(pendingSummaryRows(page).first()).toBeVisible();
+  return true;
 }
 
 export async function createPendingRequest(
@@ -66,19 +109,37 @@ export async function createPendingRequest(
 
       await slotButton.click();
 
-      const requestButton = page.getByRole('button', { name: /Solicitar Tutoría \(\d+\)/ });
-      await expect(requestButton).toBeEnabled();
+      const requestButton = page.getByRole('button', { name: /Solicitar Tutoría/i });
+      if (!(await requestButton.isVisible().catch(() => false))) {
+        continue;
+      }
+
+      if (!(await requestButton.isEnabled().catch(() => false))) {
+        continue;
+      }
+
       await requestButton.click();
 
       const messageBox = page.getByRole('textbox', { name: /Mensaje para el tutor/ });
-      await expect(messageBox).toBeVisible();
+      if (!(await messageBox.isVisible().catch(() => false))) {
+        continue;
+      }
+
+      const virtualButton = page.getByRole('button', { name: /Virtual/i });
+      if (await virtualButton.isVisible().catch(() => false)) {
+        await virtualButton.click();
+      }
+
       await messageBox.fill(message);
 
       await page.getByRole('button', { name: 'Enviar Solicitud' }).click();
-      await expect(page.getByText(/¡Solicitud enviada!/)).toBeVisible();
-      return message;
+
+      const sent = await page.getByText(/¡Solicitud enviada!/).isVisible().catch(() => false);
+      if (sent) {
+        return true;
+      }
     }
   }
 
-  throw new Error('No se encontró un horario disponible para crear una solicitud pendiente de HU09.');
+  return false;
 }

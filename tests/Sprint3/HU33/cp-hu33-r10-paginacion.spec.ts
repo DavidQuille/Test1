@@ -3,12 +3,14 @@ import { loginAndGoto } from '../../auth';
 // seed: tests/seed.spec.ts
 
 import { test, expect } from '@playwright/test';
-import { MIS_SOLICITUDES_URL } from '../../config';
+import { BASE_URL, MIS_SOLICITUDES_URL } from '../../config';
 
 test.describe('Mis Solicitudes - Paginación', () => {
   test('CP-HU-33-R10: Verificar visualización de controles de paginación', async ({ page }) => {
     // Navegar a Mis Solicitudes
     await loginAndGoto(page, MIS_SOLICITUDES_URL);
+    await page.goto(`${BASE_URL}/dashboard/solicitudes`);
+    await page.waitForURL('**/dashboard/solicitudes');
 
     // Esperar carga
     await new Promise(f => setTimeout(f, 3 * 1000));

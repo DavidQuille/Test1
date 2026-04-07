@@ -2,13 +2,15 @@
 // seed: tests/seed.spec.ts
 
 import { test, expect } from '@playwright/test';
-import { loginAndGoto } from '../../../auth';
-import { TUTOR_HISTORIAL_URL, BASE_URL } from '../../../config';
+import { loginAndGoto } from '../../auth';
+import { TUTOR_HISTORIAL_URL, BASE_URL } from '../../config';
 
 test.describe('CP-HU-39-R3: Navegación por número de página en el Historial de Tutorías', () => {
   test('Navegación por número de página en el Historial de Tutorías', async ({ page }) => {
     // 1. Iniciar sesión como Tutor.
     await loginAndGoto(page, TUTOR_HISTORIAL_URL);
+    await page.goto(`${BASE_URL}/tutor/historial`);
+    await page.waitForURL('**/tutor/historial');
     
     // Verificar que el botón de página 2 es visible
     const pageButton2 = page.getByRole('button', { name: '2' });

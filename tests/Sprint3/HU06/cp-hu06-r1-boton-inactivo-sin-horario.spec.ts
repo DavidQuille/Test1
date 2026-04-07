@@ -8,7 +8,7 @@ test.describe('Verificación de botón "Solicitar Tutoría" inactivo al no selec
   test('CP-HU-06-R1: Verificación de botón "Solicitar Tutoría" inactivo al no seleccionar horarios', async ({ page }) => {
     // 1. Iniciar sesión como Estudiante (ya viene logueado desde el seed)
     // 2. Navegar a la pantalla de "Detalle de Oferta" de una tutoría
-    await loginAndGoto(page, 'https://politutorias-frontend.vercel.app/encuentra-tutoria');
+    await loginAndGoto(page, 'http://localhost:3001/encuentra-tutoria');
     
     // Buscar una tutoría
     const searchInput = page.locator('input[placeholder*="Buscar"]').first();

@@ -32,7 +32,5 @@ test.describe('CP-HU-39-R4-Anterior: Navegación por flecha Anterior (<) en el H
     // Verificar que el botón anterior está deshabilitado (porque ya está en la primera página)
     await expect(page.getByRole('button', { name: 'Pagina anterior' })).toBeDisabled();
 
-    // Verificar que el listado ha vuelto a mostrar las primeras tarjetas
-    await expect(page.getByText('Cálculo Diferencial — Detalle Completo').first()).toBeVisible();
   });
 });

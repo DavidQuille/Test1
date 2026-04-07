@@ -17,9 +17,10 @@ test.describe('HU11 - Agenda Estudiante', () => {
     const foundVirtual = await openUpcomingSessionByMode(page, 'Virtual');
     test.skip(!foundVirtual, 'No hay tutoría próxima en modalidad Virtual en los datos actuales.');
 
+    const dialog = page.getByRole('dialog', { name: /Detalles de la sesion/i });
     await expectModalCommonFields(page);
-    await expect(page.getByText(/^Virtual$/i)).toBeVisible();
-    await expect(page.getByText(/ENLACE/i)).toBeVisible();
+    await expect(dialog.getByText(/^Virtual$/i)).toBeVisible();
+    await expect(dialog.getByText(/ENLACE/i)).toBeVisible();
 
     await closeModalWithButton(page);
   });
