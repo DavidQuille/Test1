@@ -2,8 +2,8 @@
 // seed: tests/seed.spec.ts
 
 import { test, expect } from '@playwright/test';
-import { loginAndGoto } from '../../../auth';
-import { TUTOR_HISTORIAL_URL, BASE_URL } from '../../../config';
+import { loginAndGoto } from '../../auth';
+import { TUTOR_HISTORIAL_URL, BASE_URL } from '../../config';
 
 test.describe('CP-HU-39-R1: Visualización inicial del Historial de Tutorías con menos de 5 registros', () => {
   test('Visualización inicial del Historial de Tutorías con menos de 5 registros', async ({ page }) => {
